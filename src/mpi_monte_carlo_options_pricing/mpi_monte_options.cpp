@@ -1,11 +1,12 @@
 
 #include <cmath>
 #include <random>
+#include <vector>
 
 namespace MPI_MONTE_OPTIONS {
 
-float* Simulate_Asset_Price_Walk( unsigned long long total_timesteps,
-                                  float* price_path_buffer,
+void Simulate_Asset_Price_Walk( unsigned long long total_timesteps,
+                                  std::vector<float>* price_path_buffer,
                                   std::default_random_engine* random_engine,
                                   float initial_price,
                                   float initial_log_deviation,
@@ -35,7 +36,21 @@ float* Simulate_Asset_Price_Walk( unsigned long long total_timesteps,
     price_path_buffer[ timestep ] = std::exp( price_path_buffer );
   }
 
-  return price_path_buffer;
 }
+
+std::vector<float> Run_Single_Threaded_Simulation( unsigned long long total_runs,
+                                       unsigned long long total_timesteps,
+                                       bool do_write_to_file,
+                                       float initial_price, 
+                                       float initial_log_deviation,
+                                       float mean,
+                                       float persistence,
+                                       float volatility ) {
+
+  
+
+}
+
+
 
 }
