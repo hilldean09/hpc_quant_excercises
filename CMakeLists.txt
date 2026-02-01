@@ -24,4 +24,3 @@ add_executable( test_mpi_monte_options )
 target_link_libraries( test_mpi_monte_options PRIVATE cnpy )
 
 add_subdirectory( src )
-add_subdirectory( scripts )

@@ -20,6 +20,7 @@ void Print_Parameters( unsigned long long total_runs,
   std::cout << "\tTotal runs : " << std::to_string( total_runs ) << "\n";
   std::cout << "\tTotal timesteps : " << std::to_string( total_timesteps ) << "\n";
   std::cout << "\tSeed : " << std::to_string( seed ) << "\n";
+  std::cout << "\tWrite to file? : " << std::to_string( do_write_to_file ) << "\n";
   std::cout << "\tInitial price : " << std::to_string( initial_price ) << "\n";
   std::cout << "\tInitial log deviation : " << std::to_string( initial_log_deviation ) << "\n";
   std::cout << "\tMean : " << std::to_string( mean ) << "\n";

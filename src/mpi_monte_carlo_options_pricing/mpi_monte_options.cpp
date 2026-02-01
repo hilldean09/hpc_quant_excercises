@@ -1,7 +1,9 @@
 
+#include "./pre_controls.hpp"
+
 #include <cnpy.h>
 
-#include <algorithms>
+#include <algorithm>
 #include <chrono>
 #include <cmath>
 #include <filesystem>
@@ -16,32 +18,33 @@ namespace MPI_MONTE_OPTIONS {
 void Simulate_Asset_Price_Walk( unsigned long long total_timesteps,
                                   std::vector<float>* price_path_buffer,
                                   std::default_random_engine* random_engine,
+                                  std::normal_distribution<float>* normal_distribution_gen,
                                   float initial_price,
                                   float initial_log_deviation,
                                   float mean,
                                   float persistence,
                                   float volatility ) {
 
-  price_path_buffer[ 0 ] = std::log( initial_price );
+  ( *price_path_buffer )[ 0 ] = std::log( initial_price );
   
-  float deviation = initial_log_deviation;
+  float log_deviation = initial_log_deviation;
 
   for( unsigned long long timestep = 0; timestep < total_timesteps; timestep++ ) {
 
     // Log return equation
     // s(t+1) = s(t) + mean + exp( h(t) ) * normal_distribution()
-    price_path_buffer[ timestep + 1 ] = price_path_buffer[ timestep ]
+    ( *price_path_buffer )[ timestep + 1 ]= ( *price_path_buffer )[ timestep ]
                                             + mean + ( std::exp( log_deviation )
-                                            * std::normal_distribution( *random_engine ) );
+                                            * ( *normal_distribution_gen )( *random_engine ) );
 
     // Mean-reverting log-volatility equation
     // h(t+1) = persistence * h(t) + volatility * normal_distribution()
-    log_deviation = persistence * log_deviation + volatility * std::normal_distribution( *random_engine );
+    log_deviation = persistence * log_deviation + volatility * ( *normal_distribution_gen )( *random_engine );
 
   }
   
   for( unsigned long long timestep = 1; timestep <= total_timesteps; timestep++ ) {
-    price_path_buffer[ timestep ] = std::exp( price_path_buffer );
+    ( *price_path_buffer )[ timestep ] = std::exp( ( *price_path_buffer )[ timestep ] );
   }
 
 }
@@ -56,11 +59,16 @@ std::vector<float> Run_Single_Threaded_Simulation( unsigned long long total_runs
                                        float persistence,
                                        float volatility ) {
 
+  // Deterministicly random componentry
   std::default_random_engine random_engine;
   random_engine.seed( seed );
 
+  std::normal_distribution<float> normal_distribution_gen( 0.0, 1.0 );
+
   std::vector<float> price_path_buffer( total_timesteps + 1 );
-  std::vector<float> price_paths( total_runs, vector<float>( total_timesteps + 1 ) );
+  std::vector<float> price_paths( total_runs * ( total_timesteps + 1 ) );
+
+  std::filesystem::path output_file;
 
   if( do_write_to_file ) {
     // Defining output directory
@@ -68,30 +76,31 @@ std::vector<float> Run_Single_Threaded_Simulation( unsigned long long total_runs
     output_directory += "_";
     output_directory += std::format( "{:%Y%m%d_%H%M%S}", std::chrono::system_clock::now() );
 
-    std::filesystem::create_directory( output_path );
+    std::filesystem::create_directory( output_directory );
 
-    std::filesystem::path output_file = output_directory;
+    output_file = output_directory;
     output_file /= MMCOP_OUTPUT_FILE_PREFIX;
     output_file += ".npy";
   }
 
   for( unsigned long long run = 0; run < total_runs; run++ ) {
 
-    Simulate_Asset_Price_Walk( total_timesteps, price_path_buffer, random_engine,
+    Simulate_Asset_Price_Walk( total_timesteps, &price_path_buffer,
+                               &random_engine, &normal_distribution_gen,
                                initial_price, initial_log_deviation, mean,
                                persistence, volatility );
 
     std::copy( price_path_buffer.begin(), 
                price_path_buffer.end(), 
-               price_paths[ run * ( total_timesteps + 1 ) ] );
+               &price_paths[ run * ( total_timesteps + 1 ) ] );
 
   }
 
   if( do_write_to_file ) {
-    cnpy::npy_save( output_file, &price_paths[0], { total_timesteps + 1, total_runs );
+    cnpy::npy_save( output_file, &price_paths[0], { total_timesteps + 1, total_runs } );
   }
 
+  return price_paths;
 }
-
 
 }
