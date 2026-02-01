@@ -1,4 +1,7 @@
 
+#include <cnpy.h>
+
+#include <algorithms>
 #include <chrono>
 #include <cmath>
 #include <filesystem>
@@ -57,11 +60,9 @@ std::vector<float> Run_Single_Threaded_Simulation( unsigned long long total_runs
   random_engine.seed( seed );
 
   std::vector<float> price_path_buffer( total_timesteps + 1 );
+  std::vector<float> price_paths( total_runs, vector<float>( total_timesteps + 1 ) );
 
-  if( !do_write_to_file ) {
-    std::vector<std::vector<float>> price_paths( total_runs, vector<float>( total_timesteps + 1 ) );
-  }
-  else {
+  if( do_write_to_file ) {
     // Defining output directory
     std::filesystem::path output_directory( MMCOP_OUTPUT_DIRECTORY_PREFIX );
     output_directory += "_";
@@ -72,33 +73,22 @@ std::vector<float> Run_Single_Threaded_Simulation( unsigned long long total_runs
     std::filesystem::path output_file = output_directory;
     output_file /= MMCOP_OUTPUT_FILE_PREFIX;
     output_file += ".npy";
-
-    std::ofstream output_stream;
-    output_stream.open( output_file, std::ios::out | std::ios::binary );
-
-    Write_Numpy_File_Header( output_stream );
   }
 
-  for( unsigned long long run; run < total_runs; run++ ) {
+  for( unsigned long long run = 0; run < total_runs; run++ ) {
 
     Simulate_Asset_Price_Walk( total_timesteps, price_path_buffer, random_engine,
                                initial_price, initial_log_deviation, mean,
                                persistence, volatility );
 
-    if( !do_write_to_file ) {
-      price_paths[ run ] = price_path_buffer;
-    }
-    else {
-      Write_Path_To_Numpy_File( price_path_buffer, output_stream );
-    }
+    std::copy( price_path_buffer.begin(), 
+               price_path_buffer.end(), 
+               price_paths[ run * ( total_timesteps + 1 ) ] );
 
   }
 
-  if( !do_write_to_file ) {
-
-  }
-  else {
-      output_stream.close();
+  if( do_write_to_file ) {
+    cnpy::npy_save( output_file, &price_paths[0], { total_timesteps + 1, total_runs );
   }
 
 }
