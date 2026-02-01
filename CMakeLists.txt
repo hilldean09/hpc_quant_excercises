@@ -17,8 +17,12 @@ set( CMAKE_CXX_FLAGS_RELEASE "-O3" )
 find_package( MPI REQUIRED COMPONENTS C CXX )
 find_package( OpenMP REQUIRED )
 
+find_package( ZLIB COMPONENTS REQUIRED )
+
 add_library( cnpy STATIC external/cnpy/cnpy.cpp )
 target_include_directories( cnpy PUBLIC external/cnpy )
+target_include_directories( cnpy PUBLIC ${ZLIB_INCLUDE_DIRS} )
+target_link_libraries(cnpy ${ZLIB_LIBRARIES})
 
 add_executable( test_mpi_monte_options )
 target_link_libraries( test_mpi_monte_options PRIVATE cnpy )
