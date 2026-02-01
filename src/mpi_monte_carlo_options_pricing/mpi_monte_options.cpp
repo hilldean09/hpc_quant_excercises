@@ -71,10 +71,12 @@ std::vector<float> Run_Single_Threaded_Simulation( unsigned long long total_runs
 
     std::filesystem::path output_file = output_directory;
     output_file /= MMCOP_OUTPUT_FILE_PREFIX;
+    output_file += ".npy";
 
     std::ofstream output_stream;
     output_stream.open( output_file, std::ios::out | std::ios::binary );
 
+    Write_Numpy_File_Header( output_stream );
   }
 
   for( unsigned long long run; run < total_runs; run++ ) {
@@ -87,9 +89,16 @@ std::vector<float> Run_Single_Threaded_Simulation( unsigned long long total_runs
       price_paths[ run ] = price_path_buffer;
     }
     else {
-
+      Write_Path_To_Numpy_File( price_path_buffer, output_stream );
     }
 
+  }
+
+  if( !do_write_to_file ) {
+
+  }
+  else {
+      output_stream.close();
   }
 
 }

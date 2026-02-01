@@ -7,4 +7,4 @@
 #define MMCOP_DEFAULT_VOLATILITY 0.001
 
 #define MMCOP_OUTPUT_DIRECTORY_PREFIX "mmcop_output"
-#define MMCOP_OUTPUT_FILE_PREFIX "all_paths_output.npy"
+#define MMCOP_OUTPUT_FILE_PREFIX "all_paths_output"
