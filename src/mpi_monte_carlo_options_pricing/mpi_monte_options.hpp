@@ -1,5 +1,8 @@
 
 
+#ifndef MMMCOP_HEADER
+#define MMMCOP_HEADER
+
 #include <random>
 
 namespace MPI_MONTE_OPTIONS {
@@ -29,4 +32,9 @@ std::vector<float> Run_Single_Threaded_Simulation( unsigned long long total_runs
 
 
 
+
 }
+
+#endif
+
+
