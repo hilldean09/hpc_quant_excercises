@@ -112,10 +112,11 @@ float Compute_Call_Price( std::vector<float>* price_paths,
 
   for( unsigned long long run = 0; run < total_runs; run++ ) {
 
-    call_price = std::pow( discounting_rate, total_timesteps ) 
-                 * std::max( ( *price_paths )[ ( run + 1 ) * total_timesteps - 1 ] - strike_price, 0 );
+    call_price += std::max( ( ( *price_paths )[ ( run + 1 ) * ( total_timesteps + 1 ) - 1 ] - strike_price ), ( float ) 0.0 );
 
   }
+
+  call_price = std::pow( discounting_rate, total_timesteps ) / total_runs;
 
   return call_price;
 }

@@ -15,7 +15,9 @@ void Print_Parameters( unsigned long long total_runs,
                        float initial_log_deviation, 
                        float mean, 
                        float persistence,
-                       float volatility ) {
+                       float volatility,
+                       float strike_price,
+                       float discounting_rate ) {
 
   std::cout << "\tTotal runs : " << std::to_string( total_runs ) << "\n";
   std::cout << "\tTotal timesteps : " << std::to_string( total_timesteps ) << "\n";
@@ -25,7 +27,9 @@ void Print_Parameters( unsigned long long total_runs,
   std::cout << "\tInitial log deviation : " << std::to_string( initial_log_deviation ) << "\n";
   std::cout << "\tMean : " << std::to_string( mean ) << "\n";
   std::cout << "\tPersistence : " << std::to_string( persistence ) << "\n";
-  std::cout << "\tVolatility : " << std::to_string( volatility ) << std::endl;
+  std::cout << "\tVolatility : " << std::to_string( volatility ) << "\n";
+  std::cout << "\tStrike price : " << std::to_string( strike_price ) << "\n";
+  std::cout << "\tDiscounting rate : " << std::to_string( discounting_rate ) << std::endl;
 
 }
 
@@ -41,10 +45,19 @@ int main( int argc, char** argv ) {
   float persistence = MMCOP_DEFAULT_PERSISTENCE;
   float volatility = MMCOP_DEFAULT_VOLATILITY;
 
-  std::cout << "Running Single Threaded Test : " << std::endl;
-  Print_Parameters( total_runs, total_timesteps, seed, do_write_to_file, initial_price, initial_log_deviation, mean, persistence, volatility );
-  Run_Single_Threaded_Simulation( total_runs, total_timesteps, seed, do_write_to_file, initial_price, initial_log_deviation, mean, persistence, volatility );
+  float strike_price = MMCOP_DEFAULT_STRIKE_PRICE;
+  float discounting_rate = MMCOP_DEFAULT_DISCOUNTING_RATE;
 
+  std::vector<float> price_paths;
+  float call_price;
+
+  std::cout << "Running Single Threaded Test : " << std::endl;
+  Print_Parameters( total_runs, total_timesteps, seed, do_write_to_file, initial_price, initial_log_deviation, mean, persistence, volatility, strike_price, discounting_rate );
+  price_paths = Run_Single_Threaded_Simulation( total_runs, total_timesteps, seed, do_write_to_file, initial_price, initial_log_deviation, mean, persistence, volatility );
+  call_price = Compute_Call_Price( &price_paths, total_runs, total_timesteps, strike_price, discounting_rate ); 
+  std::cout << "Test Results : \n";
+  std::cout << "\tCall price : " << std::to_string( call_price ) << "\n";
+  std::cout << std::endl;
 
   return 0;
 }
