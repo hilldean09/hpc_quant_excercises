@@ -33,7 +33,8 @@ void Simulate_Asset_Price_Walk( unsigned long long total_timesteps,
 
     // Log return equation
     // s(t+1) = s(t) + mean + exp( h(t) ) * normal_distribution()
-    ( *price_path_buffer )[ timestep + 1 ]= ( *price_path_buffer )[ timestep ]
+    ( *price_path_buffer )[ timestep + 1 ] = ( *price_path_buffer )[ timestep ]
+
                                             + mean + ( std::exp( log_deviation )
                                             * ( *normal_distribution_gen )( *random_engine ) );
 
