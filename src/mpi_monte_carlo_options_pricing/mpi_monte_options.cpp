@@ -103,4 +103,21 @@ std::vector<float> Run_Single_Threaded_Simulation( unsigned long long total_runs
   return price_paths;
 }
 
+float Compute_Call_Price( std::vector<float>* price_paths,
+                          unsigned long long total_runs,
+                          unsigned long long total_timesteps,
+                          float strike_price,
+                          float discounting_rate ) {
+  float call_price = 0;
+
+  for( unsigned long long run = 0; run < total_runs; run++ ) {
+
+    call_price = std::pow( discounting_rate, total_timesteps ) 
+                 * std::max( ( *price_paths )[ ( run + 1 ) * total_timesteps - 1 ] - strike_price, 0 );
+
+  }
+
+  return call_price;
+}
+
 }

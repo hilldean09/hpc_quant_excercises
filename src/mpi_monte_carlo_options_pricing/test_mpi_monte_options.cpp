@@ -31,8 +31,8 @@ void Print_Parameters( unsigned long long total_runs,
 
 int main( int argc, char** argv ) {
   // Parameters
-  unsigned long long total_runs = 50;
-  unsigned long long total_timesteps = 100;
+  unsigned long long total_runs = 5;
+  unsigned long long total_timesteps = 10;
   unsigned long long seed = MMCOP_DEFAULT_SEED;
   bool do_write_to_file = true;
   float initial_price = MMCOP_DEFAULT_INITIAL_PRICE;

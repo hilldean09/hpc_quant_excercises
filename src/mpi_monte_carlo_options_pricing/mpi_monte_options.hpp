@@ -31,7 +31,11 @@ std::vector<float> Run_Single_Threaded_Simulation( unsigned long long total_runs
                                        float persistence = MMCOP_DEFAULT_PERSISTENCE,
                                        float volatility = MMCOP_DEFAULT_VOLATILITY );
 
-
+float Compute_Call_Price( std::vector<float>* price_paths,
+                          unsigned long long total_runs,
+                          unsigned long long total_timesteps,
+                          float strike_price,
+                          float discounting_rate );
 
 
 }
