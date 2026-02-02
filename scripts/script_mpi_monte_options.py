@@ -17,4 +17,5 @@ price_paths_array = Read_NPY( sys.argv[ 1 ] )
 
 Generate_Price_Paths_Plot( price_paths_array )
 
+plt.yscale( 'log' )
 plt.show()
