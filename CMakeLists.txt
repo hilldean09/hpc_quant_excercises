@@ -28,3 +28,13 @@ add_executable( test_mpi_monte_options )
 target_link_libraries( test_mpi_monte_options PRIVATE cnpy )
 
 add_subdirectory( src )
+
+
+### COPYING SCRIPTS ###
+
+add_custom_command( 
+  TARGET test_mpi_monte_options POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy 
+    ${CMAKE_SOURCE_DIR}/scripts/script_mpi_monte_options.py
+    $<TARGET_FILE_DIR:test_mpi_monte_options>
+)
