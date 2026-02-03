@@ -61,9 +61,9 @@ int main( int argc, char** argv ) {
   std::cout << std::endl;
 
 
-  mean = MMCOP_DEFAULT_MEAN * 10000;
-  persistence = 0.9999;
-  volatility = MMCOP_DEFAULT_VOLATILITY / 100000;
+  mean = MMCOP_DEFAULT_MEAN * 2;
+  persistence = 0.8;
+  volatility = MMCOP_DEFAULT_VOLATILITY / 2;
 
   std::cout << "Running Optimistic Single Threaded Test : " << std::endl;
   Print_Parameters( total_runs, total_timesteps, seed, do_write_to_file, initial_price, initial_log_deviation, mean, persistence, volatility, strike_price, discounting_rate );

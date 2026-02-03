@@ -34,7 +34,6 @@ void Simulate_Asset_Price_Walk( unsigned long long total_timesteps,
     // Log return equation
     // s(t+1) = s(t) + mean + exp( h(t) ) * normal_distribution()
     ( *price_path_buffer )[ timestep + 1 ] = ( *price_path_buffer )[ timestep ]
-
                                             + mean + ( std::exp( log_deviation )
                                             * ( *normal_distribution_gen )( *random_engine ) );
 
@@ -43,8 +42,8 @@ void Simulate_Asset_Price_Walk( unsigned long long total_timesteps,
     log_deviation = persistence * log_deviation + volatility * ( *normal_distribution_gen )( *random_engine );
 
   }
-  
-  for( unsigned long long timestep = 1; timestep <= total_timesteps; timestep++ ) {
+
+  for( unsigned long long timestep = 0; timestep <= total_timesteps; timestep++ ) {
     ( *price_path_buffer )[ timestep ] = std::exp( ( *price_path_buffer )[ timestep ] );
   }
 
@@ -98,7 +97,7 @@ std::vector<float> Run_Single_Threaded_Simulation( unsigned long long total_runs
   }
 
   if( do_write_to_file ) {
-    cnpy::npy_save( output_file, &price_paths[0], { total_timesteps + 1, total_runs } );
+    cnpy::npy_save( output_file, &price_paths[0], { total_runs, total_timesteps + 1 } );
   }
 
   return price_paths;
@@ -117,7 +116,7 @@ float Compute_Call_Price( std::vector<float>* price_paths,
 
   }
 
-  call_price = std::pow( discounting_rate, total_timesteps ) / total_runs;
+  call_price = call_price * std::pow( discounting_rate, total_timesteps ) / total_runs;
 
   return call_price;
 }

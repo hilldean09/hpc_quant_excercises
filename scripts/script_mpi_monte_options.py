@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 def Read_NPY( npy_filename ):
     price_paths_array = np.load( npy_filename )
 
-    return np.transpose( price_paths_array )
+    return price_paths_array
 
 def Generate_Price_Paths_Plot( price_paths_array ):
     for run in range( 0,  int( price_paths_array.shape[ 0 ] ) ):
