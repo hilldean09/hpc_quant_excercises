@@ -24,6 +24,7 @@ Heston_Parameters Construct_Parameters_Object( float initial_price,
                                                float mean_reversion_level,
                                                float volatility,
                                                float correlation_factor ) {
+
   Heston_Parameters new_parameters = { initial_price, initial_variance,
                                        timestep, drift, 
                                        mean_reversion_speed, mean_reversion_level,
@@ -34,9 +35,10 @@ Heston_Parameters Construct_Parameters_Object( float initial_price,
 }
 
 void Simulate_Asset_Price_Walk( unsigned long long total_timesteps,
-                                  std::vector<float>* price_path_buffer,
-                                  std::mt19937_64* random_engine,
-                                  std::normal_distribution<float>* normal_distribution_gen ) {
+                                std::vector<float>* price_path_buffer,
+                                std::mt19937_64* random_engine,
+                                std::normal_distribution<float>* normal_distribution_gen,
+                                Heston_Parameters parameters ) {
 
   for( unsigned long long timestep = 0; timestep < total_timesteps; timestep++ ) {
 
@@ -47,7 +49,8 @@ void Simulate_Asset_Price_Walk( unsigned long long total_timesteps,
 std::vector<float> Run_Single_Threaded_Simulation( unsigned long long total_runs,
                                        unsigned long long total_timesteps,
                                        unsigned long long seed,
-                                       bool do_write_to_file ) {
+                                       bool do_write_to_file,
+                                       Heston_Parameters parameters ) {
 
   // Deterministicly random componentry
   std::mt19937_64 random_engine;
@@ -74,6 +77,12 @@ std::vector<float> Run_Single_Threaded_Simulation( unsigned long long total_runs
   }
 
   for( unsigned long long run = 0; run < total_runs; run++ ) {
+
+    Simulate_Asset_Price_Walk( total_timesteps,
+                               &price_path_buffer,
+                               &random_engine,
+                               &normal_distribution_gen,
+                               parameters );
 
 
     std::copy( price_path_buffer.begin(), 
