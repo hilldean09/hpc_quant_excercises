@@ -18,17 +18,17 @@ void Print_Parameters( unsigned long long total_runs,
   std::cout << "\tTotal runs : " << std::to_string( total_runs ) << "\n";
   std::cout << "\tTotal timesteps : " << std::to_string( total_timesteps ) << "\n";
   std::cout << "\tTimestep : " << std::to_string( parameters.timestep ) << "\n";
-
   std::cout << "\tSeed : " << std::to_string( seed ) << "\n";
   std::cout << "\tWrite to file? : " << std::to_string( do_write_to_file ) << "\n";
 
   std::cout << "\tInitial price : " << std::to_string( parameters.initial_price ) << "\n";
-  std::cout << "\tInitial variance : " << std::to_string( parameters.variance ) << "\n";
+
+  std::cout << "\tInitial variance : " << std::to_string( parameters.initial_variance ) << "\n";
   std::cout << "\tDrift factor : " << std::to_string( parameters.drift ) << "\n";
   std::cout << "\tMean reversion speed : " << std::to_string( parameters.mean_reversion_speed ) << "\n";
   std::cout << "\tMean reversion level : " << std::to_string( parameters.mean_reversion_level ) << "\n";
   std::cout << "\tVolatility : " << std::to_string( parameters.volatility ) << "\n";
-  std::cout << "\tCorrelation factor : " << std::to_string( parameters.correlation ) << "\n";
+  std::cout << "\tCorrelation factor : " << std::to_string( parameters.correlation_factor ) << "\n";
 
   std::cout << "\tStrike price : " << std::to_string( strike_price ) << "\n";
   std::cout << "\tDiscounting rate : " << std::to_string( discounting_rate ) << std::endl;
@@ -38,8 +38,8 @@ void Print_Parameters( unsigned long long total_runs,
 int main( int argc, char** argv ) {
 
   // Parameters
-  unsigned long long total_runs = 100'000;
-  unsigned long long total_timesteps = 50;
+  unsigned long long total_runs = 100;
+  unsigned long long total_timesteps = 252;
   unsigned long long seed = MMCOP_DEFAULT_SEED;
   bool do_write_to_file = true;
   Heston_Parameters parameters = Construct_Parameters_Object( MMCOP_DEFAULT_INITIAL_PRICE,
@@ -67,7 +67,11 @@ int main( int argc, char** argv ) {
   std::cout << std::endl;
 
 
-  std::cout << "Running Optimistic Single Threaded Test : " << std::endl;
+  parameters.initial_variance /= 2;
+  parameters.mean_reversion_speed *= 1.5;
+  parameters.volatility /= 10;
+
+  std::cout << "Running Calm Single Threaded Test : " << std::endl;
   Print_Parameters( total_runs, total_timesteps, seed, do_write_to_file, parameters, strike_price, discounting_rate );
   price_paths = Run_Single_Threaded_Simulation( total_runs, total_timesteps, seed, do_write_to_file, parameters );
   call_price = Compute_Call_Price( &price_paths, total_runs, total_timesteps, strike_price, discounting_rate );
