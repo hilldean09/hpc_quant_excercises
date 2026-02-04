@@ -9,6 +9,7 @@
 #include <filesystem>
 #include <format>
 #include <fstream>
+#include <iostream>
 #include <random>
 #include <string>
 #include <vector>
@@ -25,26 +26,8 @@ void Simulate_Asset_Price_Walk( unsigned long long total_timesteps,
                                   float persistence,
                                   float volatility ) {
 
-  ( *price_path_buffer )[ 0 ] = std::log( initial_price );
-  
-  float log_deviation = initial_log_deviation;
-
   for( unsigned long long timestep = 0; timestep < total_timesteps; timestep++ ) {
 
-    // Log return equation
-    // s(t+1) = s(t) + mean + exp( h(t) ) * normal_distribution()
-    ( *price_path_buffer )[ timestep + 1 ] = ( *price_path_buffer )[ timestep ]
-                                            + mean + ( std::exp( log_deviation )
-                                            * ( *normal_distribution_gen )( *random_engine ) );
-
-    // Mean-reverting log-volatility equation
-    // h(t+1) = persistence * h(t) + volatility * normal_distribution()
-    log_deviation = persistence * log_deviation + volatility * ( *normal_distribution_gen )( *random_engine );
-
-  }
-
-  for( unsigned long long timestep = 0; timestep <= total_timesteps; timestep++ ) {
-    ( *price_path_buffer )[ timestep ] = std::exp( ( *price_path_buffer )[ timestep ] );
   }
 
 }
@@ -54,10 +37,13 @@ std::vector<float> Run_Single_Threaded_Simulation( unsigned long long total_runs
                                        unsigned long long seed,
                                        bool do_write_to_file,
                                        float initial_price, 
-                                       float initial_log_deviation,
-                                       float mean,
-                                       float persistence,
-                                       float volatility ) {
+                                       float initial_variance,
+                                       float timestep,
+                                       float drift,
+                                       float mean_reversion_speed,
+                                       float mean_reversion_level,
+                                       float volatility,
+                                       float correlation_factor );
 
   // Deterministicly random componentry
   std::mt19937_64 random_engine;
@@ -85,10 +71,6 @@ std::vector<float> Run_Single_Threaded_Simulation( unsigned long long total_runs
 
   for( unsigned long long run = 0; run < total_runs; run++ ) {
 
-    Simulate_Asset_Price_Walk( total_timesteps, &price_path_buffer,
-                               &random_engine, &normal_distribution_gen,
-                               initial_price, initial_log_deviation, mean,
-                               persistence, volatility );
 
     std::copy( price_path_buffer.begin(), 
                price_path_buffer.end(), 
@@ -116,7 +98,7 @@ float Compute_Call_Price( std::vector<float>* price_paths,
 
   }
 
-  call_price = call_price * std::pow( discounting_rate, total_timesteps ) / total_runs;
+  call_price = ( std::pow( discounting_rate, total_timesteps ) * call_price ) / total_runs;
 
   return call_price;
 }
