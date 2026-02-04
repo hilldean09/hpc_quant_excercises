@@ -40,7 +40,36 @@ void Simulate_Asset_Price_Walk( unsigned long long total_timesteps,
                                 std::normal_distribution<float>* normal_distribution_gen,
                                 Heston_Parameters parameters ) {
 
-  for( unsigned long long timestep = 0; timestep < total_timesteps; timestep++ ) {
+  float asset_price = parameters.initial_price;
+  ( *price_path_buffer ) [ 0 ] = asset_price;
+
+  float variance = parameters.initial_variance;
+  float weiner_step_1;
+  float weiner_step_2;
+
+  for( unsigned long long timestep = 1; timestep < total_timesteps + 1; timestep++ ) {
+
+    // Using the Heston stochastic volatility model
+
+    // W_1 = sqrt( dt ) * Z
+    weiner_step_1 = std::sqrt( parameters.timestep ) * ( *normal_distribution_gen )( *random_engine );
+
+    // dS_t = drift * S_t * dt + sqrt( var ) * S_t * W_1
+    asset_price += parameters.drift * asset_price * parameters.timestep 
+                   + std::sqrt( variance ) * asset_price * weiner_step_1;
+
+    ( *price_path_buffer )[ timestep ] = asset_price;
+
+    // W_2 = p * W_1 + sqrt( 1 - p^2 ) * sqrt( dt ) * Z
+    weiner_step_2 = parameters.correlation_factor * weiner_step_1
+                    + std::sqrt( 1 - std::pow( parameters.correlation, 2 ) )
+                    * std::sqrt( parameters.timestep ) 
+                    * ( *normal_distribution_gen )( *random_engine );
+
+    // dvar= k( Θ - var ) * dt + σ * sqrt( var ) * W_2
+    variance += parameters.mean_reversion_speed 
+                * ( parameters.mean_reversion_level - variance ) * parameters.timestep
+                + parameters.volatility * std::sqrt( variance ) * weiner_step_2;
 
   }
 
