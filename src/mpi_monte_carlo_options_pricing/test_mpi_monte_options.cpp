@@ -40,11 +40,14 @@ int main( int argc, char** argv ) {
   unsigned long long total_timesteps = 50;
   unsigned long long seed = MMCOP_DEFAULT_SEED;
   bool do_write_to_file = true;
-  float initial_price = MMCOP_DEFAULT_INITIAL_PRICE;
-  float initial_log_deviation = MMCOP_DEFAULT_INITIAL_LOG_DEVIATION;
-  float mean = MMCOP_DEFAULT_MEAN;
-  float persistence = MMCOP_DEFAULT_PERSISTENCE;
-  float volatility = MMCOP_DEFAULT_VOLATILITY;
+  Heston_Parameters parameters = Construct_Parameters_Object( MMCOP_DEFAULT_INITIAL_PRICE,
+                                                              MMCOP_DEFAULT_INITIAL_VARIANCE,
+                                                              MMCOP_DEFAULT_TIMESTEP,
+                                                              MMCOP_DEFAULT_DRIFT,
+                                                              MMCOP_DEFAULT_MEAN_REVERSION_SPEED,
+                                                              MMCOP_DEFAULT_MEAN_REVERSION_LEVEL,
+                                                              MMCOP_DEFAULT_VOLATILITY,
+                                                              MMCOP_DEFAULT_CORRELATION_FACTOR );
 
   float strike_price = MMCOP_DEFAULT_STRIKE_PRICE;
   float discounting_rate = MMCOP_DEFAULT_DISCOUNTING_RATE;
@@ -55,21 +58,17 @@ int main( int argc, char** argv ) {
 
   std::cout << "Running Default Single Threaded Test : " << std::endl;
   Print_Parameters( total_runs, total_timesteps, seed, do_write_to_file, initial_price, initial_log_deviation, mean, persistence, volatility, strike_price, discounting_rate );
-  price_paths = Run_Single_Threaded_Simulation( total_runs, total_timesteps, seed, do_write_to_file, initial_price, initial_log_deviation, mean, persistence, volatility );
+  price_paths = Run_Single_Threaded_Simulation( total_runs, total_timesteps, seed, do_write_to_file, parameters );
   call_price = Compute_Call_Price( &price_paths, total_runs, total_timesteps, strike_price, discounting_rate ); 
   std::cout << "Test Results : \n";
   std::cout << "\tCall price : " << std::to_string( call_price ) << "\n";
   std::cout << std::endl;
 
 
-  mean = MMCOP_DEFAULT_MEAN * 2;
-  persistence = 0.8;
-  volatility = MMCOP_DEFAULT_VOLATILITY / 2;
-
   std::cout << "Running Optimistic Single Threaded Test : " << std::endl;
   Print_Parameters( total_runs, total_timesteps, seed, do_write_to_file, initial_price, initial_log_deviation, mean, persistence, volatility, strike_price, discounting_rate );
-  price_paths = Run_Single_Threaded_Simulation( total_runs, total_timesteps, seed, do_write_to_file, initial_price, initial_log_deviation, mean, persistence, volatility );
-  call_price = Compute_Call_Price( &price_paths, total_runs, total_timesteps, strike_price, discounting_rate ); 
+  price_paths = Run_Single_Threaded_Simulation( total_runs, total_timesteps, seed, do_write_to_file, parameters );
+  call_price = Compute_Call_Price( &price_paths, total_runs, total_timesteps, strike_price, discounting_rate );
   std::cout << "Test Results : \n";
   std::cout << "\tCall price : " << std::to_string( call_price ) << "\n";
   std::cout << std::endl;
