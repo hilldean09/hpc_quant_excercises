@@ -16,6 +16,23 @@
 
 namespace MPI_MONTE_OPTIONS {
 
+Heston_Parameters Construct_Parameters_Object( float initial_price,
+                                               float initial_variance,
+                                               float timestep,
+                                               float drift,
+                                               float mean_reversion_speed,
+                                               float mean_reversion_level,
+                                               float volatility,
+                                               float correlation_factor ) {
+  Heston_Parameters new_parameters = { initial_price, initial_variance,
+                                       timestep, drift, 
+                                       mean_reversion_speed, mean_reversion_level,
+                                       volatility, 
+                                       correlation_factor };
+
+  return new_parameters;
+}
+
 void Simulate_Asset_Price_Walk( unsigned long long total_timesteps,
                                   std::vector<float>* price_path_buffer,
                                   std::mt19937_64* random_engine,
