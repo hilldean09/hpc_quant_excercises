@@ -7,6 +7,18 @@
 
 namespace MPI_MONTE_OPTIONS {
 
+typedef struct heston_parameters_struct {
+
+  float initial_price;
+  float initial_variance;
+  float timestep;
+  float mean_reversion_speed;
+  float mean_reversion_level;
+  float volatility;
+  float correlation_factor;
+
+} Heston_Parameters;
+
 void Simulate_Asset_Price_Walk( unsigned long long total_timesteps,
                                   std::vector<float> price_path_buffer,
                                   std::mt19937_64* random_engine,

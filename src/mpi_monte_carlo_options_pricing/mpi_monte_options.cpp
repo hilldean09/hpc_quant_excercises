@@ -19,12 +19,7 @@ namespace MPI_MONTE_OPTIONS {
 void Simulate_Asset_Price_Walk( unsigned long long total_timesteps,
                                   std::vector<float>* price_path_buffer,
                                   std::mt19937_64* random_engine,
-                                  std::normal_distribution<float>* normal_distribution_gen,
-                                  float initial_price,
-                                  float initial_log_deviation,
-                                  float mean,
-                                  float persistence,
-                                  float volatility ) {
+                                  std::normal_distribution<float>* normal_distribution_gen ) {
 
   for( unsigned long long timestep = 0; timestep < total_timesteps; timestep++ ) {
 
@@ -35,15 +30,7 @@ void Simulate_Asset_Price_Walk( unsigned long long total_timesteps,
 std::vector<float> Run_Single_Threaded_Simulation( unsigned long long total_runs,
                                        unsigned long long total_timesteps,
                                        unsigned long long seed,
-                                       bool do_write_to_file,
-                                       float initial_price, 
-                                       float initial_variance,
-                                       float timestep,
-                                       float drift,
-                                       float mean_reversion_speed,
-                                       float mean_reversion_level,
-                                       float volatility,
-                                       float correlation_factor );
+                                       bool do_write_to_file ) {
 
   // Deterministicly random componentry
   std::mt19937_64 random_engine;
