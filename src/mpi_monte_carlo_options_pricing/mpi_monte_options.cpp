@@ -1,4 +1,5 @@
 
+#include "./mpi_monte_options.hpp"
 #include "./pre_controls.hpp"
 
 #include <cnpy.h>
@@ -62,7 +63,7 @@ void Simulate_Asset_Price_Walk( unsigned long long total_timesteps,
 
     // W_2 = p * W_1 + sqrt( 1 - p^2 ) * sqrt( dt ) * Z
     weiner_step_2 = parameters.correlation_factor * weiner_step_1
-                    + std::sqrt( 1 - std::pow( parameters.correlation, 2 ) )
+                    + std::sqrt( 1 - std::pow( parameters.correlation_factor, 2 ) )
                     * std::sqrt( parameters.timestep ) 
                     * ( *normal_distribution_gen )( *random_engine );
 
