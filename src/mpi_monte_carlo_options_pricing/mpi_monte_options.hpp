@@ -42,6 +42,12 @@ std::vector<float> Run_Single_Threaded_Simulation( unsigned long long total_runs
                                             bool do_write_to_file,
                                             Heston_Parameters parameters );
 
+std::vector<float> Run_Multi_Threaded_Simulation( unsigned long long total_runs,
+                                            unsigned long long total_timesteps,
+                                            unsigned long long seed,
+                                            bool do_write_to_file,
+                                            Heston_Parameters parameters );
+
 float Compute_Call_Price( std::vector<float>* price_paths,
                           unsigned long long total_runs,
                           unsigned long long total_timesteps,

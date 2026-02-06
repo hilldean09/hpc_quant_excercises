@@ -39,7 +39,7 @@ int main( int argc, char** argv ) {
 
   // Parameters
   unsigned long long total_runs = 100;
-  unsigned long long total_timesteps = 252;
+  unsigned long long total_timesteps = 504;
   unsigned long long seed = MMCOP_DEFAULT_SEED;
   bool do_write_to_file = true;
   Heston_Parameters parameters = Construct_Parameters_Object( MMCOP_DEFAULT_INITIAL_PRICE,
@@ -78,6 +78,20 @@ int main( int argc, char** argv ) {
   std::cout << "Test Results : \n";
   std::cout << "\tCall price : " << std::to_string( call_price ) << "\n";
   std::cout << std::endl;
+
+
+  parameters.initial_variance = MMCOP_DEFAULT_INITIAL_VARIANCE;
+  parameters.mean_reversion_speed = MMCOP_DEFAULT_MEAN_REVERSION_SPEED;
+  parameters.volatility = MMCOP_DEFAULT_VOLATILITY;
+
+  std::cout << "Running Default Multi Threaded Test : " << std::endl;
+  Print_Parameters( total_runs, total_timesteps, seed, do_write_to_file, parameters, strike_price, discounting_rate );
+  price_paths = Run_Multi_Threaded_Simulation( total_runs, total_timesteps, seed, do_write_to_file, parameters );
+  call_price = Compute_Call_Price( &price_paths, total_runs, total_timesteps, strike_price, discounting_rate );
+  std::cout << "Test Results : \n";
+  std::cout << "\tCall price : " << std::to_string( call_price ) << "\n";
+  std::cout << std::endl;
+
 
   return 0;
 }

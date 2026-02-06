@@ -15,3 +15,6 @@
 
 #define MMCOP_OUTPUT_DIRECTORY_PREFIX "mmcop_output"
 #define MMCOP_OUTPUT_FILE_PREFIX "all_paths_output"
+
+#define MMCOP_THREAD_SEED_MAGIC_NUMBER 137
+#define MMCOP_NUMBER_OF_THREADS 4
