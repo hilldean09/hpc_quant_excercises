@@ -25,7 +25,11 @@ target_include_directories( cnpy PUBLIC ${ZLIB_INCLUDE_DIRS} )
 target_link_libraries(cnpy ${ZLIB_LIBRARIES})
 
 add_executable( test_mpi_monte_options )
-target_link_libraries( test_mpi_monte_options PRIVATE cnpy )
+target_link_libraries( test_mpi_monte_options 
+  PRIVATE 
+    cnpy
+    OpenMP::OpenMP_CXX
+)
 
 add_subdirectory( src )
 

@@ -73,7 +73,8 @@ void Simulate_Asset_Price_Walk( unsigned long long total_timesteps,
                 * ( parameters.mean_reversion_level - variance ) * parameters.timestep
                 + parameters.volatility * std::sqrt( variance ) * weiner_step_2;
 
-    variance = std::max( ( float ) 0.0, variance );
+    // Alternative to abs is max
+    variance = std::abs( variance );
 
   }
 
@@ -156,7 +157,7 @@ std::vector<float> Run_Multi_Threaded_Simulation( const unsigned long long total
   }
 
   // Shared values are effectively constant except price_paths
-  #omp parallel default( none ) shared( price_paths, total_runs, total_timesteps, seed, do_write_to_file, parameters ) num_threads( MMCOP_NUMBER_OF_THREADS )
+  #pragma omp parallel default( none ) shared( price_paths, total_runs, total_timesteps, seed, do_write_to_file, parameters ) num_threads( MMCOP_NUMBER_OF_THREADS )
   {
     int thread_idx = omp_get_thread_num();
 
@@ -170,7 +171,7 @@ std::vector<float> Run_Multi_Threaded_Simulation( const unsigned long long total
 
     // Parallelised simulation 
     // TODO: Investigate memory sharing here
-    #omp for default( none ) schedule( static ) 
+    #pragma omp for schedule( static ) 
     for( unsigned long long run = 0; run < total_runs; run++ ) {
 
       Simulate_Asset_Price_Walk( total_timesteps,
