@@ -1,5 +1,5 @@
 # hpc_quant_excercises
-A collection of my exercises in high-performance computing and low latency programming in the context of quantitative finance. 🚡
+A collection of my exercises in high-performance computing and low latency programming in the context of quantitative finance.
 
 # Current Excerciss
 ## MPI Monte Carlo Options Pricing
