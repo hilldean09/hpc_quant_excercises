@@ -46,5 +46,5 @@ make [desired target]
 ```
 
 # Acknowledgements 
-Google Benchmark : https://github.com/google/benchmark
-cnpy : https://github.com/rogersce/cnpy
+- Google Benchmark : https://github.com/google/benchmark
+- cnpy : https://github.com/rogersce/cnpy
