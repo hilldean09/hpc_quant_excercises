@@ -16,6 +16,7 @@ set( CMAKE_CXX_FLAGS_RELEASE "-O3" )
 
 find_package( MPI REQUIRED COMPONENTS C CXX )
 find_package( OpenMP REQUIRED )
+find_package( benchmark REQUIRED )
 
 find_package( ZLIB COMPONENTS REQUIRED )
 
@@ -30,6 +31,15 @@ target_link_libraries( test_mpi_monte_options
     cnpy
     OpenMP::OpenMP_CXX
 )
+
+add_executable( benchmark_mpi_monte_options )
+target_link_libraries( benchmark_mpi_monte_options
+  PRIVATE 
+    cnpy
+    OpenMP::OpenMP_CXX
+    benchmark::benchmark
+)
+
 
 add_subdirectory( src )
 
