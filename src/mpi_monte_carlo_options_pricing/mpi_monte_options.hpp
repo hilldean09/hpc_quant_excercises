@@ -54,6 +54,12 @@ float Compute_Call_Price( std::vector<float>* price_paths,
                           float strike_price,
                           float discounting_rate );
 
+float Run_Full_MPI_Simulation( unsigned long long total_runs,
+                               unsigned long long total_timesteps,
+                               unsigned long long seed,
+                               bool do_write_to_file,
+                               Heston_Parameters parameters );
+
 }
 
 #endif

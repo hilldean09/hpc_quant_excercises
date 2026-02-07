@@ -4,6 +4,7 @@
 
 #include <cnpy.h>
 #include <omp.h>
+#include <mpi.h>
 
 #include <algorithm>
 #include <chrono>
@@ -212,6 +213,50 @@ float Compute_Call_Price( std::vector<float>* price_paths,
   }
 
   call_price = ( std::pow( discounting_rate, total_timesteps ) * call_price ) / total_runs;
+
+  return call_price;
+}
+
+
+
+
+float Run_Full_MPI_Simulation( unsigned long long total_runs,
+                               unsigned long long total_timesteps,
+                               unsigned long long seed,
+                               bool do_write_to_file,
+                               Heston_Parameters parameters ) {
+  float call_price = 0.0;
+
+  #if( MMCOP_USE_MPI == 1 )
+
+  // Get MPI Comm infomration
+  int size_mpi;
+  int rank_mpi;
+  MPI_Comm_size( MPI_COMM_WORLD, &size_mpi );
+  MPI_Comm_rank( MPI_COMM_WORLD, &rank_mpi );
+
+
+  // Run partitioning
+  unsigned long long rounded_runs_per_rank = total_runs / rank_mpi;
+  unsigned long long run_range_start = rank_mpi * rounded_runs_per_rank;
+
+  // run_range_end represents the exclusive end of the run range
+  unsigned long long run_range_end;
+  if( rank_mpi == size_mpi - 1 ) {
+    // Ensuring all runs are accounted for
+    run_range_end = total_runs;
+  }
+  else {
+    run_range_end = ( rank_mpi + 1 ) * rounded_runs_per_rank - 1;
+  }
+
+  
+
+
+  #else
+  std::cout << "Error : MPI is not enabled" << std::endl;
+  #endif
+
 
   return call_price;
 }

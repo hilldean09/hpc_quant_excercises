@@ -1,4 +1,9 @@
 
+
+#ifndef MMCOP_PRE_CONTROLS
+#define MMCOP_PRE_CONTROLS
+
+// Parameters
 #define MMCOP_DEFAULT_SEED 1
 
 #define MMCOP_DEFAULT_INITIAL_PRICE 100
@@ -13,8 +18,18 @@
 #define MMCOP_DEFAULT_STRIKE_PRICE 100
 #define MMCOP_DEFAULT_DISCOUNTING_RATE 0.95
 
+
+// File Related
 #define MMCOP_OUTPUT_DIRECTORY_PREFIX "mmcop_output"
 #define MMCOP_OUTPUT_FILE_PREFIX "all_paths_output"
 
+
+// OpenMP related
 #define MMCOP_THREAD_SEED_MAGIC_NUMBER 137
 #define MMCOP_NUMBER_OF_THREADS 4
+
+
+// MPI Related
+#define MMCOP_USE_MPI 1
+
+#endif
