@@ -30,6 +30,7 @@ target_link_libraries( test_mpi_monte_options
   PRIVATE 
     cnpy
     OpenMP::OpenMP_CXX
+    MPI::MPI_CXX
 )
 
 add_executable( benchmark_mpi_monte_options )
@@ -38,6 +39,7 @@ target_link_libraries( benchmark_mpi_monte_options
     cnpy
     OpenMP::OpenMP_CXX
     benchmark::benchmark
+    MPI::MPI_CXX
 )
 
 
