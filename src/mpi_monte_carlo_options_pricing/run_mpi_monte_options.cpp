@@ -42,6 +42,32 @@ void User_Parameter_Initialisation( unsigned long long* total_runs, unsigned lon
                                     bool* do_write_to_file, Heston_Parameters* parameters, 
                                     float* strike_price, float* discounting_rate ) {
 
+  std::cout << "--- User Parameter Initialisation ---\n" << std::endl;
+
+  std::string input_buffer;
+
+  bool do_manual_initialisation = false;
+  bool do_continue_initialisation_mode = true;
+
+  while( do_continue_initialisation_mode ) {
+    std::cout << "Do manual initialisation (defaults will be applied otherwise)? y / n : ";
+    std::cin >> input_buffer;
+    std::cout << std::endl;
+
+    if( input_buffer == "y" || input_buffer == "Y" ) {
+      do_manual_initialisation == true;
+      do_continue_initialisation_mode == false;
+    }
+    else if( input_buffer == "n" || input_buffer == "N" ) {
+      do_manual_initialisation == false;
+      do_continue_initialisation_mode == false;
+    }
+    else {
+      std::cout << "Answer not recognised, please try again" << std::endl;
+    }
+
+  }
+
 
 
 }
