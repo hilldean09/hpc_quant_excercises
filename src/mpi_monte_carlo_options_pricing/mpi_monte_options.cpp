@@ -224,7 +224,10 @@ float Run_Full_MPI_Simulation( unsigned long long total_runs,
                                unsigned long long total_timesteps,
                                unsigned long long seed,
                                bool do_write_to_file,
-                               Heston_Parameters parameters ) {
+                               Heston_Parameters parameters,
+                               float strike_price,
+                               float discounting_rate ) {
+
   float call_price = 0.0;
 
   #if( MMCOP_USE_MPI == 1 )
@@ -235,22 +238,41 @@ float Run_Full_MPI_Simulation( unsigned long long total_runs,
   MPI_Comm_size( MPI_COMM_WORLD, &size_mpi );
   MPI_Comm_rank( MPI_COMM_WORLD, &rank_mpi );
 
+  MPI_Status status_buffer_mpi;
+
 
   // Run partitioning
   unsigned long long rounded_runs_per_rank = total_runs / rank_mpi;
-  unsigned long long run_range_start = rank_mpi * rounded_runs_per_rank;
 
-  // run_range_end represents the exclusive end of the run range
-  unsigned long long run_range_end;
   if( rank_mpi == size_mpi - 1 ) {
     // Ensuring all runs are accounted for
-    run_range_end = total_runs;
-  }
-  else {
-    run_range_end = ( rank_mpi + 1 ) * rounded_runs_per_rank - 1;
+    rounded_runs_per_rank += total_runs % size_mpi;
   }
 
-  
+  // Running simulation, scoped to accelerate vector deletion
+  {
+    std::vector<float> price_paths = Run_Multi_Threaded_Simulation( total_runs, total_timesteps, seed, do_write_to_file, parameters );
+    call_price = Compute_Call_Price( &price_paths, total_runs, total_timesteps, strike_price, discounting_rate );
+  }
+
+
+  // Call price reduction (i.e. summing into rank 0 through all
+  // other ranks
+  float call_price_recepetion_buffer;
+  for( int sending_rank = 1; sending_rank < size_mpi; sending_rank++ ) {
+
+    // Recieving
+    if( mpi_rank == 0 ) {
+      MPI_Recv( &call_price_recepetion_buffer, 1, MPI_FLOAT, sending_rank, MMMCOP_MPI_Tags.CALL_PRICE_REDUCTION, MPI_COMM_WORLD, status_buffer_mpi );
+
+      call_price += call_price_recepetion_buffer;
+    }
+    // Sending
+    else if( rank_mpi == sending_rank ) {
+      MPI_Send( &call_price_recepetion_buffer, 1, MPI_FLOAT, 0, MMMCOP_MPI_Tags.CALL_PRICE_REDUCTION, MPI_COMM_WORLD );
+    }
+
+  }
 
 
   #else

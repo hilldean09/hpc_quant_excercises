@@ -7,6 +7,12 @@
 
 namespace MPI_MONTE_OPTIONS {
 
+typedef enum mmcop_mpi_tags_struct {
+
+  CALL_PRICE_REDUCTION
+
+} MMCOP_MPI_Tags;
+
 typedef struct heston_parameters_struct {
 
   float initial_price;
@@ -58,7 +64,9 @@ float Run_Full_MPI_Simulation( unsigned long long total_runs,
                                unsigned long long total_timesteps,
                                unsigned long long seed,
                                bool do_write_to_file,
-                               Heston_Parameters parameters );
+                               Heston_Parameters parameters,
+                               float strike_price,
+                               float discounting_rate );
 
 }
 
