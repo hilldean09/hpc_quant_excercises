@@ -5,7 +5,7 @@ A collection of my exercises in high-performance computing and low latency progr
 ## MPI Monte Carlo Options Pricing
 - Uses the Heston stochastic volatility model to simulate asset price movements, computing a call price.
 - Developed to explore using MPI and profiling / optimising very tight loops.
-- Includes a Python script (```script_mpi_monte_options```) to visualise the price walks from the written datan within output directories.
+- Includes a Python script (```script_mpi_monte_options```) to visualise the price walks from the written data within output directories.
 
 **Executables Available**
 - ```test_mpi_monte_options```
