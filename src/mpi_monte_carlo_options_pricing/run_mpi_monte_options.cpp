@@ -42,15 +42,31 @@ template <class T_type_to_check>
 bool Is_Of_Type( std::string string_to_check ) {
 
   // Effectively uses a string stream to attempt to construct a value 
-  // of the given type and checking if fail or bad bits are set.
+  // of the given type and checking if fail or bad bits are set. "noskipws"
+  // indicates that initial whitespace is not overlooked.
 
   std::istringstream input_string_stream( string_to_check );
   T_type_to_check testing_value;
 
-  input_string_stream >> testing_value;
+  input_string_stream >> noskipws >> testing_value;
 
   return input_string_stream.eof() && !input_string_stream.fail();
 }
+
+
+// Overloading a string to type function //
+unsigned long long String_To_Type( std::string input_string ) { 
+  return std::stoull( input_string );
+}
+
+int String_To_Type( std::string input_string ) { 
+  return std::stoi( input_string );
+}
+
+float String_To_Type( std::string input_string ) { 
+  return std::stof( input_string );
+}
+// End of overloading //
 
 template <class T_return_type>
 T_return_type Get_Parameter_From_User( std::string parameter_name, std::string type_name, T_return_type default_value ) {
@@ -63,13 +79,23 @@ T_return_type Get_Parameter_From_User( std::string parameter_name, std::string t
 
   while( continue_input_loop ) {
     std::cin >> input_string;
+    std::cout << std::endl;
 
     if( input_string == "default" ) {
       output = default_value;
+      continue_input_loop = false;
+    }
+    else if( Is_Of_Type<T_return_type>( input_string ) ) {
+      output = String_To_Type( input_string );
+      continue_input_loop = false;
+    }
+    else {
+      std::cout << "\tPlease try again, expected type [ " << type_name << " ] : ";
     }
 
   }
 
+  return output;
 }
 
 
@@ -104,7 +130,7 @@ void User_Parameter_Initialisation( unsigned long long* total_runs, unsigned lon
   }
 
   if( do_manual_initialisation ) {
-    total_runs = Get_Parameter_From_User<unsigned long long>( "Total Runs" );
+    *total_runs = Get_Parameter_From_User<unsigned long long>( "Total Runs" );
   }
 
 }
