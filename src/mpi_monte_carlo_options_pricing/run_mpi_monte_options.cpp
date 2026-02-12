@@ -37,6 +37,41 @@ void Print_Parameters( unsigned long long total_runs,
   std::cout << "\tDiscounting rate : " << std::to_string( discounting_rate ) << std::endl;
 }
 
+// Adapted from https://stackoverflow.com/a/447307
+template <class T_type_to_check>
+bool Is_Of_Type( std::string string_to_check ) {
+
+  // Effectively uses a string stream to attempt to construct a value 
+  // of the given type and checking if fail or bad bits are set.
+
+  std::istringstream input_string_stream( string_to_check );
+  T_type_to_check testing_value;
+
+  input_string_stream >> testing_value;
+
+  return input_string_stream.eof() && !input_string_stream.fail();
+}
+
+template <class T_return_type>
+T_return_type Get_Parameter_From_User( std::string parameter_name, std::string type_name, T_return_type default_value ) {
+
+  T_return_type output;
+  std::string input_string;
+  bool continue_input_loop = true;
+
+  std::cout << "\t[ " << parameter_name << " ] of type [ " << type_name << " ] with default of [ " << std::to_string( default_value ) << " ] : ";
+
+  while( continue_input_loop ) {
+    std::cin >> input_string;
+
+    if( input_string == "default" ) {
+      output = default_value;
+    }
+
+  }
+
+}
+
 
 void User_Parameter_Initialisation( unsigned long long* total_runs, unsigned long long* total_timesteps, int* seed, 
                                     bool* do_write_to_file, Heston_Parameters* parameters, 
@@ -68,7 +103,9 @@ void User_Parameter_Initialisation( unsigned long long* total_runs, unsigned lon
 
   }
 
-
+  if( do_manual_initialisation ) {
+    total_runs = Get_Parameter_From_User<unsigned long long>( "Total Runs" );
+  }
 
 }
 
