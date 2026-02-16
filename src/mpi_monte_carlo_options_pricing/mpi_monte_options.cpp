@@ -262,14 +262,14 @@ float Run_Full_MPI_Simulation( unsigned long long total_runs,
   for( int sending_rank = 1; sending_rank < size_mpi; sending_rank++ ) {
 
     // Recieving
-    if( mpi_rank == 0 ) {
-      MPI_Recv( &call_price_recepetion_buffer, 1, MPI_FLOAT, sending_rank, MMMCOP_MPI_Tags.CALL_PRICE_REDUCTION, MPI_COMM_WORLD, status_buffer_mpi );
+    if( rank_mpi == 0 ) {
+      MPI_Recv( &call_price_recepetion_buffer, 1, MPI_FLOAT, sending_rank, MMCOP_MPI_Tags::CALL_PRICE_REDUCTION, MPI_COMM_WORLD, &status_buffer_mpi );
 
       call_price += call_price_recepetion_buffer;
     }
     // Sending
     else if( rank_mpi == sending_rank ) {
-      MPI_Send( &call_price_recepetion_buffer, 1, MPI_FLOAT, 0, MMMCOP_MPI_Tags.CALL_PRICE_REDUCTION, MPI_COMM_WORLD );
+      MPI_Send( &call_price_recepetion_buffer, 1, MPI_FLOAT, 0, MMCOP_MPI_Tags::CALL_PRICE_REDUCTION, MPI_COMM_WORLD );
     }
 
   }

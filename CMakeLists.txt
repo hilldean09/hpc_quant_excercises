@@ -25,6 +25,26 @@ target_include_directories( cnpy PUBLIC external/cnpy )
 target_include_directories( cnpy PUBLIC ${ZLIB_INCLUDE_DIRS} )
 target_link_libraries(cnpy ${ZLIB_LIBRARIES})
 
+
+add_library( mpi_monte_options_lib STATIC )
+target_link_libraries( mpi_monte_options_lib
+  PRIVATE 
+    cnpy
+    OpenMP::OpenMP_CXX
+    MPI::MPI_CXX
+)
+
+
+### EXECUTABLES ###
+
+add_executable( run_mpi_monte_options )
+target_link_libraries( run_mpi_monte_options 
+  PRIVATE 
+    cnpy
+    OpenMP::OpenMP_CXX
+    MPI::MPI_CXX
+)
+
 add_executable( test_mpi_monte_options )
 target_link_libraries( test_mpi_monte_options 
   PRIVATE 
