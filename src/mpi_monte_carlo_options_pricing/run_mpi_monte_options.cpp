@@ -2,6 +2,14 @@
 
 #include "./pre_controls.hpp"
 #include "./mpi_monte_options.hpp"
+void Print_Parameters( unsigned long long total_runs,
+                       unsigned long long total_timesteps,
+                       int total_ranks,
+                       unsigned long long seed,
+                       bool do_write_to_file,
+                       Heston_Parameters parameters,
+                       float strike_price,
+                       float discounting_rate ) {
 
 #include <iostream>
 #include <string>
@@ -34,6 +42,7 @@ void Print_Parameters( unsigned long long total_runs,
 
   std::cout << "\tStrike price : " << std::to_string( strike_price ) << "\n";
   std::cout << "\tDiscounting rate : " << std::to_string( discounting_rate ) << std::endl;
+  std::cout << std::endl;
 }
 
 // Adapted from https://stackoverflow.com/a/447307
@@ -198,8 +207,8 @@ void User_Parameter_Initialisation( unsigned long long* total_runs, unsigned lon
 }
 
 
-
 int main( int argc, char* argv[] ) {
+
   // Parameter Declaration
   unsigned long long total_runs;
   unsigned long long total_timesteps;
@@ -215,9 +224,12 @@ int main( int argc, char* argv[] ) {
 
   // Simple CLI parser
   for( int arg_idx = 1; argv_idx < argc; argv_idx++ ) {
+    
+    // Checking for skip manual initialisation flag
     if( std::string( argv[ arg_idx ] ) == "-d" || std::string( argv[ arg_idx ] ) == "--default" ) {
       skip_manual_initialisation = true;
     }
+
   }
 
   if( !skip_manual_initialisation ) {
@@ -226,8 +238,35 @@ int main( int argc, char* argv[] ) {
                                    &do_write_to_file, &parameters, &strike_price, &discounting_rate );
 
   }
+  else {
 
+    // Default initialisation
+    do_write_to_file = false;
+    total_runs = MMCOP_DEFAULT_TOTAL_RUNS;
+    total_timesteps = MMCOP_DEFAULT_TOTAL_TIMESTEPS;
+    parameters.timestep = MMCOP_DEFAULT_TIMESTEP;
+    seed = MMCOP_DEFAULT_SEED;
+    parameters.initial_price = MMCOP_DEFAULT_INITIAL_PRICE;
+    parameters.initial_variance = MMCOP_DEFAULT_INITIAL_VARIANCE;
+    parameters.drift = MMCOP_DEFAULT_DRIFT_FACTOR;
+    parameters.mean_reversion_speed = MMCOP_DEFAULT_MEAN_REVERSION_SPEED;
+    parameters.mean_reversion_level = MMCOP_DEFAULT_MEAN_REVERSION_LEVEL;
+    parameters.volatility = MMCOP_DEFAULT_VOLATILITY;
+    parameters.correlation_factor = MMCOP_DEFAULT_CORRELATION_FACTOR;
 
+  }
+
+  Print_Parameters( total_runs, total_timesteps, total_ranks, seed, do_write_to_file, parameters, strike_price, discounting_rate );
+
+  // Running simulation
+  call_price = Run_Full_MPI_Simulation( total_runs, total_timesteps,
+                                        seed, do_write_to_file,
+                                        parameters,
+                                        strike_price, discounting_rate );
+
+  std::cout << "Results : \n";
+  std::cout << "\tCall price : " << std::to_string( call_price ) << "\n";
+  std::cout << std::endl;
 
   return 0;
 }
