@@ -25,7 +25,6 @@ void Print_Parameters( unsigned long long total_runs,
   std::cout << "\tWrite to file? : " << std::to_string( do_write_to_file ) << "\n";
 
   std::cout << "\tInitial price : " << std::to_string( parameters.initial_price ) << "\n";
-
   std::cout << "\tInitial variance : " << std::to_string( parameters.initial_variance ) << "\n";
   std::cout << "\tDrift factor : " << std::to_string( parameters.drift ) << "\n";
   std::cout << "\tMean reversion speed : " << std::to_string( parameters.mean_reversion_speed ) << "\n";
@@ -98,6 +97,35 @@ T_return_type Get_Parameter_From_User( std::string parameter_name, std::string t
   return output;
 }
 
+bool Get_Bool_From_User( std::string question_string ) {
+
+  bool output;
+  std::string input_string;
+  bool continue_input_loop = true;
+
+  std::cout << "\t" << question_string << " ( y / n ) : ";
+
+  while( continue_input_loop ) {
+    std::cin >> input_string;
+    std::cout << std::endl;
+
+    if( input_string == "y" || input_string == "Y" ) {
+      output = true;
+      continue_input_loop = false;
+    }
+    else if( input_string == "n" || input_string == "N"  ) {
+      output = false;
+      continue_input_loop = false;
+    }
+    else {
+      std::cout << "\tPlease try again, input not recognised : ";
+    }
+
+  }
+
+  return output;
+}
+
 
 void User_Parameter_Initialisation( unsigned long long* total_runs, unsigned long long* total_timesteps, int* seed, 
                                     bool* do_write_to_file, Heston_Parameters* parameters, 
@@ -111,7 +139,7 @@ void User_Parameter_Initialisation( unsigned long long* total_runs, unsigned lon
   bool do_continue_initialisation_mode = true;
 
   while( do_continue_initialisation_mode ) {
-    std::cout << "Do manual initialisation (defaults will be applied otherwise)? y / n : ";
+    std::cout << "Do manual initialisation (defaults will be applied otherwise)? ( y / n ) : ";
     std::cin >> input_buffer;
     std::cout << std::endl;
 
@@ -129,8 +157,42 @@ void User_Parameter_Initialisation( unsigned long long* total_runs, unsigned lon
 
   }
 
+  std::cout << std::endl;
+
   if( do_manual_initialisation ) {
-    *total_runs = Get_Parameter_From_User<unsigned long long>( "Total Runs" );
+    std::cout << "Manual Initialisation : \"default\" can be entered for number types" << std::endl;
+
+    *do_write_to_file = Get_Bool_From_User( "Write to file?" );
+    *total_runs = Get_Parameter_From_User<unsigned long long>( "Total Runs", "Unsigned Long Long", MMCOP_DEFAULT_TOTAL_RUNS );
+    *total_timesteps = Get_Parameter_From_User<unsigned long long>( "Total Timesteps", "Unsigned Long Long", MMCOP_DEFAULT_TOTAL_TIMESTEPS );
+    *parameters.timestep = Get_Parameter_From_User<float>( "Timestep", "Float", MMCOP_DEFAULT_TIMESTEP );
+    *seed = Get_Parameter_From_User<int>( "Seed", "Int", MMCOP_DEFAULT_SEED );
+    *parameters.initial_price = Get_Parameter_From_User<float>( "Initial Price", "Float", MMCOP_DEFAULT_INITIAL_PRICE );
+    *parameters.initial_variance = Get_Parameter_From_User<float>( "Initial Variance", "Float", MMCOP_DEFAULT_INITIAL_VARIANCE );
+    *parameters.drift = Get_Parameter_From_User<float>( "Drift Factor", "Float", MMCOP_DEFAULT_DRIFT_FACTOR );
+    *parameters.mean_reversion_speed = Get_Parameter_From_User<float>( "Mean Reversion Speed", "Float", MMCOP_DEFAULT_MEAN_REVERSION_SPEED );
+    *parameters.mean_reversion_level = Get_Parameter_From_User<float>( "Mean Reversion Level", "Float", MMCOP_DEFAULT_MEAN_REVERSION_LEVEL );
+    *parameters.volatility = Get_Parameter_From_User<float>( "Volatility", "Float", MMCOP_DEFAULT_VOLATILITY );
+    *parameters.correlation_factor = Get_Parameter_From_User<float>( "Correlation Factor", "Float", MMCOP_DEFAULT_CORRELATION_FACTOR );
+    std::cout << std::endl;
+
+  }
+  else {
+
+    // Default initialisation
+    *do_write_to_file = false;
+    *total_runs = MMCOP_DEFAULT_TOTAL_RUNS;
+    *total_timesteps = MMCOP_DEFAULT_TOTAL_TIMESTEPS;
+    *parameters.timestep = MMCOP_DEFAULT_TIMESTEP;
+    *seed = MMCOP_DEFAULT_SEED;
+    *parameters.initial_price = MMCOP_DEFAULT_INITIAL_PRICE;
+    *parameters.initial_variance = MMCOP_DEFAULT_INITIAL_VARIANCE;
+    *parameters.drift = MMCOP_DEFAULT_DRIFT_FACTOR;
+    *parameters.mean_reversion_speed = MMCOP_DEFAULT_MEAN_REVERSION_SPEED;
+    *parameters.mean_reversion_level = MMCOP_DEFAULT_MEAN_REVERSION_LEVEL;
+    *parameters.volatility = MMCOP_DEFAULT_VOLATILITY;
+    *parameters.correlation_factor = MMCOP_DEFAULT_CORRELATION_FACTOR;
+
   }
 
 }
