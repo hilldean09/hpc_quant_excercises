@@ -234,51 +234,51 @@ int main( int argc, char* argv[] ) {
   // Parameter Initialisation //
 
   // Only occurs for first rank
-  if( this_rank == 0 ) {
 
-    // Simple CLI parser
-    for( int argv_idx = 1; argv_idx < argc; argv_idx++ ) {
-      
-      // Checking for skip manual initialisation flag
-      if( std::string( argv[ argv_idx ] ) == "-d" || std::string( argv[ argv_idx ] ) == "--default" ) {
-        skip_manual_initialisation = true;
-      }
+  // Simple CLI parser
+  for( int argv_idx = 1; argv_idx < argc; argv_idx++ ) {
 
+    // Checking for skip manual initialisation flag
+    if( std::string( argv[ argv_idx ] ) == "-d" || std::string( argv[ argv_idx ] ) == "--default" ) {
+      skip_manual_initialisation = true;
     }
-
-    if( !skip_manual_initialisation ) {
-
-      User_Parameter_Initialisation( &total_runs, &total_timesteps, &seed, 
-                                    &do_write_to_file, &parameters, &strike_price, &discounting_rate );
-
-    }
-    else {
-
-      // Default initialisation
-      do_write_to_file = false;
-      total_runs = MMCOP_DEFAULT_TOTAL_RUNS;
-      total_timesteps = MMCOP_DEFAULT_TOTAL_TIMESTEPS;
-      parameters.timestep = MMCOP_DEFAULT_TIMESTEP;
-      seed = MMCOP_DEFAULT_SEED;
-      parameters.initial_price = MMCOP_DEFAULT_INITIAL_PRICE;
-      parameters.initial_variance = MMCOP_DEFAULT_INITIAL_VARIANCE;
-      parameters.drift = MMCOP_DEFAULT_DRIFT;
-      parameters.mean_reversion_speed = MMCOP_DEFAULT_MEAN_REVERSION_SPEED;
-      parameters.mean_reversion_level = MMCOP_DEFAULT_MEAN_REVERSION_LEVEL;
-      parameters.volatility = MMCOP_DEFAULT_VOLATILITY;
-      parameters.correlation_factor = MMCOP_DEFAULT_CORRELATION_FACTOR;
-      strike_price = MMCOP_DEFAULT_STRIKE_PRICE;
-      discounting_rate = MMCOP_DEFAULT_DISCOUNTING_RATE;
-
-    }
-
-    // TODO: Write data sending
 
   }
+
+  if( !skip_manual_initialisation ) {
+
+    if( this_rank == 0 ) {
+    User_Parameter_Initialisation( &total_runs, &total_timesteps, &seed, 
+                                  &do_write_to_file, &parameters, &strike_price, &discounting_rate );
+    }
+
+  }
+  else {
+
+    // Default initialisation
+    do_write_to_file = false;
+    total_runs = MMCOP_DEFAULT_TOTAL_RUNS;
+    total_timesteps = MMCOP_DEFAULT_TOTAL_TIMESTEPS;
+    parameters.timestep = MMCOP_DEFAULT_TIMESTEP;
+    seed = MMCOP_DEFAULT_SEED;
+    parameters.initial_price = MMCOP_DEFAULT_INITIAL_PRICE;
+    parameters.initial_variance = MMCOP_DEFAULT_INITIAL_VARIANCE;
+    parameters.drift = MMCOP_DEFAULT_DRIFT;
+    parameters.mean_reversion_speed = MMCOP_DEFAULT_MEAN_REVERSION_SPEED;
+    parameters.mean_reversion_level = MMCOP_DEFAULT_MEAN_REVERSION_LEVEL;
+    parameters.volatility = MMCOP_DEFAULT_VOLATILITY;
+    parameters.correlation_factor = MMCOP_DEFAULT_CORRELATION_FACTOR;
+    strike_price = MMCOP_DEFAULT_STRIKE_PRICE;
+    discounting_rate = MMCOP_DEFAULT_DISCOUNTING_RATE;
+
+  }
+
+  // TODO: Write data sending
+
   // Parameter Initialisation End //
 
-  std::cout << "--- Running ---" << std::endl;
   if( this_rank == 0 ) {
+    std::cout << "--- Running ---" << std::endl;
     Print_Parameters( total_runs, total_timesteps, total_ranks, seed, do_write_to_file, parameters, strike_price, discounting_rate );
   }
 
