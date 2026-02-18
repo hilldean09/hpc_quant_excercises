@@ -242,7 +242,7 @@ float Run_Full_MPI_Simulation( unsigned long long total_runs,
 
 
   // Run partitioning
-  unsigned long long rounded_runs_per_rank = total_runs / rank_mpi;
+  unsigned long long rounded_runs_per_rank = total_runs / size_mpi;
 
   if( rank_mpi == size_mpi - 1 ) {
     // Ensuring all runs are accounted for
@@ -271,6 +271,12 @@ float Run_Full_MPI_Simulation( unsigned long long total_runs,
     else if( rank_mpi == sending_rank ) {
       MPI_Send( &call_price_recepetion_buffer, 1, MPI_FLOAT, 0, MMCOP_MPI_Tags::CALL_PRICE_REDUCTION, MPI_COMM_WORLD );
     }
+
+  }
+
+  if( rank_mpi == 0 ) {
+
+    call_price = call_price / size_mpi;
 
   }
 
