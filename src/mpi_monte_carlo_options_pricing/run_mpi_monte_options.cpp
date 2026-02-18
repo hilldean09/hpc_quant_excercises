@@ -183,7 +183,6 @@ void User_Parameter_Initialisation( unsigned long long* total_runs, unsigned lon
     parameters->correlation_factor = Get_Parameter_From_User<float>( "Correlation Factor", "Float", MMCOP_DEFAULT_CORRELATION_FACTOR );
     *strike_price = Get_Parameter_From_User<float>( "Strike Price", "Float", MMCOP_DEFAULT_STRIKE_PRICE );
     *discounting_rate = Get_Parameter_From_User<float>( "Discounting Rate", "Float", MMCOP_DEFAULT_DISCOUNTING_RATE );
-    std::cout << std::endl;
 
   }
   else {
@@ -266,6 +265,7 @@ int main( int argc, char* argv[] ) {
 
   }
 
+  std::cout << "--- Running ---" << std::endl;
   Print_Parameters( total_runs, total_timesteps, total_ranks, seed, do_write_to_file, parameters, strike_price, discounting_rate );
 
   // Running simulation
