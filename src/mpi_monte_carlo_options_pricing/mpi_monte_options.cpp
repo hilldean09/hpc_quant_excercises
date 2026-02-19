@@ -212,6 +212,7 @@ float Compute_Call_Price( std::vector<float>* price_paths,
 
   }
 
+  // TODO: Fix daily application of annual rate error
   call_price = ( std::pow( discounting_rate, total_timesteps ) * call_price ) / total_runs;
 
   return call_price;
