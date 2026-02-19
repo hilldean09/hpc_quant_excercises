@@ -61,7 +61,7 @@ int main( int argc, char** argv ) {
   std::cout << "Running Default Single Threaded Test : " << std::endl;
   Print_Parameters( total_runs, total_timesteps, seed, do_write_to_file, parameters, strike_price, discounting_rate );
   price_paths = Run_Single_Threaded_Simulation( total_runs, total_timesteps, seed, do_write_to_file, parameters );
-  call_price = Compute_Call_Price( &price_paths, total_runs, total_timesteps, strike_price, discounting_rate ); 
+  call_price = Compute_Call_Price( &price_paths, total_runs, total_timesteps, parameters.timestep, strike_price, discounting_rate ); 
   std::cout << "Test Results : \n";
   std::cout << "\tCall price : " << std::to_string( call_price ) << "\n";
   std::cout << std::endl;
@@ -74,7 +74,7 @@ int main( int argc, char** argv ) {
   std::cout << "Running Calm Single Threaded Test : " << std::endl;
   Print_Parameters( total_runs, total_timesteps, seed, do_write_to_file, parameters, strike_price, discounting_rate );
   price_paths = Run_Single_Threaded_Simulation( total_runs, total_timesteps, seed, do_write_to_file, parameters );
-  call_price = Compute_Call_Price( &price_paths, total_runs, total_timesteps, strike_price, discounting_rate );
+  call_price = Compute_Call_Price( &price_paths, total_runs, total_timesteps, parameters.timestep, strike_price, discounting_rate );
   std::cout << "Test Results : \n";
   std::cout << "\tCall price : " << std::to_string( call_price ) << "\n";
   std::cout << std::endl;
@@ -87,7 +87,7 @@ int main( int argc, char** argv ) {
   std::cout << "Running Default Multi Threaded Test : " << std::endl;
   Print_Parameters( total_runs, total_timesteps, seed, do_write_to_file, parameters, strike_price, discounting_rate );
   price_paths = Run_Multi_Threaded_Simulation( total_runs, total_timesteps, seed, do_write_to_file, parameters );
-  call_price = Compute_Call_Price( &price_paths, total_runs, total_timesteps, strike_price, discounting_rate );
+  call_price = Compute_Call_Price( &price_paths, total_runs, total_timesteps, parameters.timestep, strike_price, discounting_rate );
   std::cout << "Test Results : \n";
   std::cout << "\tCall price : " << std::to_string( call_price ) << "\n";
   std::cout << std::endl;

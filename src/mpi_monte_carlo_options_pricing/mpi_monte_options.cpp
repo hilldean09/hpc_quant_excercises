@@ -202,6 +202,7 @@ std::vector<float> Run_Multi_Threaded_Simulation( const unsigned long long total
 float Compute_Call_Price( std::vector<float>* price_paths,
                           unsigned long long total_runs,
                           unsigned long long total_timesteps,
+                          float timestep,
                           float strike_price,
                           float discounting_rate ) {
   float call_price = 0;
@@ -212,8 +213,10 @@ float Compute_Call_Price( std::vector<float>* price_paths,
 
   }
 
-  // TODO: Fix daily application of annual rate error
-  call_price = ( std::pow( discounting_rate, total_timesteps ) * call_price ) / total_runs;
+  // The exponent of total_timesteps * timestep is a compound
+  // discounting and annual to arbitrary period conversion 
+  // combined.
+  call_price = ( std::pow( discounting_rate, total_timesteps * timestep ) * call_price ) / total_runs;
 
   return call_price;
 }
@@ -253,7 +256,7 @@ float Run_Full_MPI_Simulation( unsigned long long total_runs,
   // Running simulation, scoped to accelerate vector deletion
   {
     std::vector<float> price_paths = Run_Multi_Threaded_Simulation( total_runs, total_timesteps, seed, do_write_to_file, parameters );
-    call_price = Compute_Call_Price( &price_paths, total_runs, total_timesteps, strike_price, discounting_rate );
+    call_price = Compute_Call_Price( &price_paths, total_runs, total_timesteps, parameters.timestep, strike_price, discounting_rate );
   }
 
 

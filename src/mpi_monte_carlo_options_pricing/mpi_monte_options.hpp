@@ -57,6 +57,7 @@ std::vector<float> Run_Multi_Threaded_Simulation( unsigned long long total_runs,
 float Compute_Call_Price( std::vector<float>* price_paths,
                           unsigned long long total_runs,
                           unsigned long long total_timesteps,
+                          float timestep,
                           float strike_price,
                           float discounting_rate );
 
