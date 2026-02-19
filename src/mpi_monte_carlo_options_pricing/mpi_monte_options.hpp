@@ -69,6 +69,21 @@ float Run_Full_MPI_Simulation( unsigned long long total_runs,
                                float strike_price,
                                float discounting_rate );
 
+void Send_Parameters_To_Other_Ranks( unsigned long long* total_runs,
+                                     unsigned long long* total_timesteps,
+                                     unsigned long long seed, 
+                                     bool* do_write_to_file,
+                                     Heston_Parameters* parameters,
+                                     float* strike_price,
+                                     float* discounting_rate );
+
+void Recieve_Parameters_From_Root_Rank( unsigned long long* total_runs,
+                                     unsigned long long* total_timesteps,
+                                     unsigned long long seed, 
+                                     bool* do_write_to_file,
+                                     Heston_Parameters* parameters,
+                                     float* strike_price,
+                                     float* discounting_rate );
 }
 
 #endif

@@ -272,10 +272,20 @@ int main( int argc, char* argv[] ) {
     discounting_rate = MMCOP_DEFAULT_DISCOUNTING_RATE;
 
   }
-
-  // TODO: Write data sending
-
   // Parameter Initialisation End //
+  
+  if( this_rank == 0 ) {
+
+    Send_Parameters_To_Other_Ranks( &total_runs, &total_timesteps, &seed, 
+                                    &do_write_to_file, &parameters, &strike_price, &discounting_rate );
+
+  }
+  else {
+
+    Recieve_Parameters_From_Root_Rank( &total_runs, &total_timesteps, &seed, 
+                        &do_write_to_file, &parameters, &strike_price, &discounting_rate );
+
+  }
 
   if( this_rank == 0 ) {
     std::cout << "--- Running ---" << std::endl;
