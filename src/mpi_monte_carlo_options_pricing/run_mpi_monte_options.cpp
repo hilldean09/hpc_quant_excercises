@@ -273,19 +273,15 @@ int main( int argc, char* argv[] ) {
 
   }
   // Parameter Initialisation End //
-  
-  if( this_rank == 0 ) {
 
-    Send_Parameters_To_Other_Ranks( &total_runs, &total_timesteps, &seed, 
-                                    &do_write_to_file, &parameters, &strike_price, &discounting_rate );
+  Share_Parameters_Over_MPI( &total_runs,
+                             &total_timesteps,
+                             &seed, 
+                             &do_write_to_file,
+                             &parameters,
+                             &strike_price,
+                             &discounting_rate );
 
-  }
-  else {
-
-    Recieve_Parameters_From_Root_Rank( &total_runs, &total_timesteps, &seed, 
-                        &do_write_to_file, &parameters, &strike_price, &discounting_rate );
-
-  }
 
   if( this_rank == 0 ) {
     std::cout << "--- Running ---" << std::endl;

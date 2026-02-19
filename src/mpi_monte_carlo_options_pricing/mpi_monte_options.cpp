@@ -292,6 +292,29 @@ float Run_Full_MPI_Simulation( unsigned long long total_runs,
   return call_price;
 }
 
+void Share_Parameters_Over_MPI( unsigned long long* total_runs,
+                                unsigned long long* total_timesteps,
+                                unsigned long long* seed, 
+                                bool* do_write_to_file,
+                                Heston_Parameters* parameters,
+                                float* strike_price,
+                                float* discounting_rate ) {
+
+  if( this_rank == 0 ) {
+
+    Send_Parameters_To_Other_Ranks( total_runs, total_timesteps, seed, 
+                                    do_write_to_file, parameters, strike_price, discounting_rate );
+
+  }
+  else {
+
+    Recieve_Parameters_From_Root_Rank( total_runs, total_timesteps, seed, 
+                        do_write_to_file, parameters, strike_price, discounting_rate );
+
+  }
+
+}
+
 void Send_Parameters_To_Other_Ranks( unsigned long long* total_runs,
                                      unsigned long long* total_timesteps,
                                      unsigned long long* seed, 

@@ -70,6 +70,15 @@ float Run_Full_MPI_Simulation( unsigned long long total_runs,
                                float strike_price,
                                float discounting_rate );
 
+// TODO: Write implementation
+void Share_Parameters_Over_MPI( unsigned long long* total_runs,
+                                unsigned long long* total_timesteps,
+                                unsigned long long* seed, 
+                                bool* do_write_to_file,
+                                Heston_Parameters* parameters,
+                                float* strike_price,
+                                float* discounting_rate );
+
 void Send_Parameters_To_Other_Ranks( unsigned long long* total_runs,
                                      unsigned long long* total_timesteps,
                                      unsigned long long* seed, 
