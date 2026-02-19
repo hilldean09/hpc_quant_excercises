@@ -9,7 +9,8 @@ namespace MPI_MONTE_OPTIONS {
 
 typedef enum mmcop_mpi_tags_struct {
 
-  CALL_PRICE_REDUCTION
+  CALL_PRICE_REDUCTION,
+  PARAMETER_SHARING
 
 } MMCOP_MPI_Tags;
 
@@ -69,17 +70,19 @@ float Run_Full_MPI_Simulation( unsigned long long total_runs,
                                float strike_price,
                                float discounting_rate );
 
+// TODO: Write implementation
 void Send_Parameters_To_Other_Ranks( unsigned long long* total_runs,
                                      unsigned long long* total_timesteps,
-                                     unsigned long long seed, 
+                                     unsigned long long* seed, 
                                      bool* do_write_to_file,
                                      Heston_Parameters* parameters,
                                      float* strike_price,
                                      float* discounting_rate );
 
+// TODO: Write implementation
 void Recieve_Parameters_From_Root_Rank( unsigned long long* total_runs,
                                      unsigned long long* total_timesteps,
-                                     unsigned long long seed, 
+                                     unsigned long long* seed, 
                                      bool* do_write_to_file,
                                      Heston_Parameters* parameters,
                                      float* strike_price,

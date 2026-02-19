@@ -222,8 +222,6 @@ float Compute_Call_Price( std::vector<float>* price_paths,
 }
 
 
-
-
 float Run_Full_MPI_Simulation( unsigned long long total_runs,
                                unsigned long long total_timesteps,
                                unsigned long long seed,
@@ -273,6 +271,7 @@ float Run_Full_MPI_Simulation( unsigned long long total_runs,
     }
     // Sending
     else if( rank_mpi == sending_rank ) {
+      // TODO: Investigate if call price reception buffer is correct here
       MPI_Send( &call_price_recepetion_buffer, 1, MPI_FLOAT, 0, MMCOP_MPI_Tags::CALL_PRICE_REDUCTION, MPI_COMM_WORLD );
     }
 
@@ -293,4 +292,45 @@ float Run_Full_MPI_Simulation( unsigned long long total_runs,
   return call_price;
 }
 
+void Send_Parameters_To_Other_Ranks( unsigned long long* total_runs,
+                                     unsigned long long* total_timesteps,
+                                     unsigned long long* seed, 
+                                     bool* do_write_to_file,
+                                     Heston_Parameters* parameters,
+                                     float* strike_price,
+                                     float* discounting_rate ) {
+
+  #if( MMCOP_USE_MPI == 1 )
+
+  int size_mpi;
+  int rank_mpi;
+
+  MPI_Comm_size( MPI_COMM_WORLD, &size_mpi );
+  MPI_Comm_rank( MPI_COMM_WORLD, &rank_mpi );
+
+  for( int other_rank = 1; other_rank < size_mpi; other_rank++ ) {
+
+    MPI_Send( total_runs, 1, MPI_UNSIGNED_LONG_LONG, other_rank, MMCOP_MPI_Tags::PARAMETER_SHARING, MPI_COMM_WORLD );
+    MPI_Send( total_timesteps, 1, MPI_UNSIGNED_LONG_LONG, other_rank, MMCOP_MPI_Tags::PARAMETER_SHARING, MPI_COMM_WORLD );
+    MPI_Send( seed, 1, MPI_UNSIGNED_LONG_LONG, other_rank, MMCOP_MPI_Tags::PARAMETER_SHARING, MPI_COMM_WORLD );
+    MPI_Send( do_write_to_file, 1, MPI_C_BOOL, other_rank, MMCOP_MPI_Tags::PARAMETER_SHARING, MPI_COMM_WORLD );
+    MPI_Send( &( parameters->initial_price ), 1, MPI_FLOAT, other_rank, MMCOP_MPI_Tags::PARAMETER_SHARING, MPI_COMM_WORLD );
+    MPI_Send( &( parameters->initial_variance ), 1, MPI_FLOAT, other_rank, MMCOP_MPI_Tags::PARAMETER_SHARING, MPI_COMM_WORLD );
+    MPI_Send( &( parameters->timestep ), 1, MPI_FLOAT, other_rank, MMCOP_MPI_Tags::PARAMETER_SHARING, MPI_COMM_WORLD );
+    MPI_Send( &( parameters->drift ), 1, MPI_FLOAT, other_rank, MMCOP_MPI_Tags::PARAMETER_SHARING, MPI_COMM_WORLD );
+    MPI_Send( &( parameters->mean_reversion_speed ), 1, MPI_FLOAT, other_rank, MMCOP_MPI_Tags::PARAMETER_SHARING, MPI_COMM_WORLD );
+    MPI_Send( &( parameters->mean_reversion_level ), 1, MPI_FLOAT, other_rank, MMCOP_MPI_Tags::PARAMETER_SHARING, MPI_COMM_WORLD );
+    MPI_Send( &( parameters->volatility ), 1, MPI_FLOAT, other_rank, MMCOP_MPI_Tags::PARAMETER_SHARING, MPI_COMM_WORLD );
+    MPI_Send( &( parameters->correlation_factor ), 1, MPI_FLOAT, other_rank, MMCOP_MPI_Tags::PARAMETER_SHARING, MPI_COMM_WORLD );
+
+  }
+
+  #else
+  std::cout << "Error : MPI is not enabled" << std::endl;
+  #endif
+
 }
+
+
+}
+
