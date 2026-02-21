@@ -1,7 +1,7 @@
-# hpc_quant_excercises
-A collection of my exercises in high-performance computing and low latency programming in the context of quantitative finance.
+# hpc_quant_exercises
+A collection of my exercise in high-performance computing and low latency programming in the context of quantitative finance.
 
-# Current Excercises
+# Current Exercises
 ## MPI Monte Carlo Options Pricing
 - Uses the Heston stochastic volatility model to simulate asset price movements, computing a call price.
 - Developed to explore using MPI and profiling / optimising very tight loops.
