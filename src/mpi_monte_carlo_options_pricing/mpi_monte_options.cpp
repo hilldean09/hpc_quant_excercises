@@ -251,6 +251,8 @@ float Run_Full_MPI_Simulation( unsigned long long total_runs,
     rounded_runs_per_rank += total_runs % size_mpi;
   }
 
+  seed += MMCOP_RANK_SEED_MAGIC_NUMBER;
+
   // Running simulation, scoped to accelerate vector deletion
   {
     std::vector<float> price_paths = Run_Multi_Threaded_Simulation( total_runs, total_timesteps, seed, do_write_to_file, parameters );
