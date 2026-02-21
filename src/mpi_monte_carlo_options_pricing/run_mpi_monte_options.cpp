@@ -245,6 +245,14 @@ int main( int argc, char* argv[] ) {
 
   }
 
+  if( IO::Parse_Parameters_From_Arguments( argc, argv, &total_runs, &total_timesteps,
+                                           &seed, &do_write_to_file, &parameters,
+                                           &strike_price, &discounting_rate ) ) {
+
+    skip_manual_initialisation = true;
+
+  }
+
   if( !skip_manual_initialisation ) {
 
     if( this_rank == 0 ) {
@@ -299,7 +307,6 @@ int main( int argc, char* argv[] ) {
     std::cout << "\tCall price : " << std::to_string( call_price ) << "\n";
     std::cout << std::endl;
   }
-
   MPI_Finalize();
 
   return 0;
