@@ -27,7 +27,7 @@ bool Is_Of_Type( std::string string_to_check ) {
   return input_string_stream.eof() && !input_string_stream.fail();
 }
 
-void Parse_Parameters_From_Arguments( int argc, char* argv[],
+bool Parse_Parameters_From_Arguments( int argc, char* argv[],
                                       unsigned long long* total_runs,
                                       unsigned long long* total_timesteps,
                                       unsigned long long* seed, 

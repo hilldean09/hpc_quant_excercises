@@ -6,7 +6,7 @@
 namespace MPI_MONTE_OPTIONS {
 namespace IO {
 
-void Parse_Parameters_From_Arguments( int argc, char* argv[],
+bool Parse_Parameters_From_Arguments( int argc, char* argv[],
                                       unsigned long long* total_runs,
                                       unsigned long long* total_timesteps,
                                       unsigned long long* seed, 
@@ -16,6 +16,7 @@ void Parse_Parameters_From_Arguments( int argc, char* argv[],
                                       float* discounting_rate ) {
 
   std::string arg;
+  bool parameter_args_detected = false;
 
   // Default initialisation
   *do_write_to_file = false;
@@ -36,11 +37,10 @@ void Parse_Parameters_From_Arguments( int argc, char* argv[],
   for( int argv_idx = 0; argv_idx < argc; argv_idx++ ) {
     arg = std::string( argv[ argv_idx ] );
 
-    // TODO: Fix type checking argument
-
     if( arg == "--write-to-file" ) {
       arg = std::string( argv[ argv_idx + 1 ] );
       argv_idx++;
+      parameter_args_detected = true;
 
       if( arg == "true" || arg == "True" ) {
         do_write_to_file = true;
@@ -59,6 +59,7 @@ void Parse_Parameters_From_Arguments( int argc, char* argv[],
 
       arg = std::string( argv[ argv_idx + 1 ] );
       argv_idx++;
+      parameter_args_detected = true;
 
       if( Is_Of_Type<unsigned long long>( arg ) ) {
         *total_runs = std::stoull( arg );
@@ -72,6 +73,7 @@ void Parse_Parameters_From_Arguments( int argc, char* argv[],
 
       arg = std::string( argv[ argv_idx + 1 ] );
       argv_idx++;
+      parameter_args_detected = true;
 
       if( Is_Of_Type<unsigned long long>( arg ) ) {
         *total_timesteps = std::stoull( arg );
@@ -85,6 +87,7 @@ void Parse_Parameters_From_Arguments( int argc, char* argv[],
 
       arg = std::string( argv[ argv_idx + 1 ] );
       argv_idx++;
+      parameter_args_detected = true;
 
       if( Is_Of_Type<unsigned long long>( arg ) ) {
         *seed = std::stoull( arg );
@@ -98,6 +101,7 @@ void Parse_Parameters_From_Arguments( int argc, char* argv[],
 
       arg = std::string( argv[ argv_idx + 1 ] );
       argv_idx++;
+      parameter_args_detected = true;
 
       if( Is_Of_Type<float>( arg ) ) {
         parameters->initial_price = std::stof( arg );
@@ -111,6 +115,7 @@ void Parse_Parameters_From_Arguments( int argc, char* argv[],
 
       arg = std::string( argv[ argv_idx + 1 ] );
       argv_idx++;
+      parameter_args_detected = true;
 
       if( Is_Of_Type<float>( arg ) ) {
         parameters->initial_variance = std::stof( arg );
@@ -124,6 +129,7 @@ void Parse_Parameters_From_Arguments( int argc, char* argv[],
 
       arg = std::string( argv[ argv_idx + 1 ] );
       argv_idx++;
+      parameter_args_detected = true;
 
       if( Is_Of_Type<float>( arg ) ) {
         parameters->timestep = std::stof( arg );
@@ -137,6 +143,7 @@ void Parse_Parameters_From_Arguments( int argc, char* argv[],
 
       arg = std::string( argv[ argv_idx + 1 ] );
       argv_idx++;
+      parameter_args_detected = true;
 
       if( Is_Of_Type<float>( arg ) ) {
         parameters->drift = std::stof( arg );
@@ -150,6 +157,7 @@ void Parse_Parameters_From_Arguments( int argc, char* argv[],
 
       arg = std::string( argv[ argv_idx + 1 ] );
       argv_idx++;
+      parameter_args_detected = true;
 
       if( Is_Of_Type<float>( arg ) ) {
         parameters->mean_reversion_speed = std::stof( arg );
@@ -163,6 +171,7 @@ void Parse_Parameters_From_Arguments( int argc, char* argv[],
 
       arg = std::string( argv[ argv_idx + 1 ] );
       argv_idx++;
+      parameter_args_detected = true;
 
       if( Is_Of_Type<float>( arg ) ) {
         parameters->mean_reversion_level = std::stof( arg );
@@ -176,6 +185,7 @@ void Parse_Parameters_From_Arguments( int argc, char* argv[],
 
       arg = std::string( argv[ argv_idx + 1 ] );
       argv_idx++;
+      parameter_args_detected = true;
 
       if( Is_Of_Type<float>( arg ) ) {
         parameters->volatility = std::stof( arg );
@@ -189,6 +199,7 @@ void Parse_Parameters_From_Arguments( int argc, char* argv[],
 
       arg = std::string( argv[ argv_idx + 1 ] );
       argv_idx++;
+      parameter_args_detected = true;
 
       if( Is_Of_Type<float>( arg ) ) {
         parameters->correlation_factor = std::stof( arg );
@@ -202,6 +213,7 @@ void Parse_Parameters_From_Arguments( int argc, char* argv[],
 
       arg = std::string( argv[ argv_idx + 1 ] );
       argv_idx++;
+      parameter_args_detected = true;
 
       if( Is_Of_Type<float>( arg ) ) {
         *strike_price = std::stof( arg );
@@ -215,6 +227,7 @@ void Parse_Parameters_From_Arguments( int argc, char* argv[],
 
       arg = std::string( argv[ argv_idx + 1 ] );
       argv_idx++;
+      parameter_args_detected = true;
 
       if( Is_Of_Type<float>( arg ) ) {
         *discounting_rate = std::stof( arg );
@@ -226,6 +239,8 @@ void Parse_Parameters_From_Arguments( int argc, char* argv[],
     }
 
   }
+
+  return parameter_args_detected;
 
 }
 
