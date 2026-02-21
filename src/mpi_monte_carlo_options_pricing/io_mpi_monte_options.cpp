@@ -39,114 +39,188 @@ void Parse_Parameters_From_Arguments( int argc, char* argv[],
     // TODO: Fix type checking argument
 
     if( arg == "--write-to-file" ) {
+      arg = std::string( argv[ argv_idx + 1 ] );
+      argv_idx++;
 
-      if( Is_Of_Type<bool>( arg ) ) {
-        *total_runs = std::stoull( std::string( argv[ argv_idx + 1 ] ) );
-        argv_idx++;
+      if( arg == "true" || arg == "True" ) {
+        do_write_to_file = true;
+      }
+      else if( arg == "false" || arg == "False" ) {
+        do_write_to_file = false;
+      }
+      else {
+
+      std::cout << "ERROR : Write to file value is invalid" << std::endl;
+
       }
 
     }
     else if( arg == "--total-runs" ) {
 
+      arg = std::string( argv[ argv_idx + 1 ] );
+      argv_idx++;
+
       if( Is_Of_Type<unsigned long long>( arg ) ) {
-        *total_runs = std::stoull( std::string( argv[ argv_idx + 1 ] ) );
-        argv_idx++;
+        *total_runs = std::stoull( arg );
+      }
+      else {
+        std::cout << "ERROR : Total runs value is invalid" << std::cout;
       }
 
     }
     else if( arg == "--total_timesteps" ) {
 
+      arg = std::string( argv[ argv_idx + 1 ] );
+      argv_idx++;
+
       if( Is_Of_Type<unsigned long long>( arg ) ) {
-        *total_timesteps = std::stoull( std::string( argv[ argv_idx + 1 ] ) );
-        argv_idx++;
+        *total_timesteps = std::stoull( arg );
+      }
+      else {
+        std::cout << "ERROR : Total timesteps value is invalid" << std::cout;
       }
 
     }
     else if( arg == "--seed" ) {
 
+      arg = std::string( argv[ argv_idx + 1 ] );
+      argv_idx++;
+
       if( Is_Of_Type<unsigned long long>( arg ) ) {
-        *seed = std::stoull( std::string( argv[ argv_idx + 1 ] ) );
-        argv_idx++;
+        *seed = std::stoull( arg );
+      }
+      else {
+        std::cout << "ERROR : Seed value is invalid" << std::cout;
       }
 
     }
     else if( arg == "--initial-price" ) {
 
+      arg = std::string( argv[ argv_idx + 1 ] );
+      argv_idx++;
+
       if( Is_Of_Type<float>( arg ) ) {
-        parammeters->initial_price = std::stof( std::string( argv[ argv_idx + 1 ] ) );
-        argv_idx++;
+        parameters->initial_price = std::stof( arg );
+      }
+      else {
+        std::cout << "ERROR : Initial price value is invalid" << std::cout;
       }
 
     }
     else if( arg == "--initial-variance" ) {
 
+      arg = std::string( argv[ argv_idx + 1 ] );
+      argv_idx++;
+
       if( Is_Of_Type<float>( arg ) ) {
-        parammeters->initial_variance = std::stof( std::string( argv[ argv_idx + 1 ] ) );
-        argv_idx++;
+        parameters->initial_variance = std::stof( arg );
+      }
+      else {
+        std::cout << "ERROR : Initial variance value is invalid" << std::cout;
       }
 
     }
     else if( arg == "--timestep" ) {
 
+      arg = std::string( argv[ argv_idx + 1 ] );
+      argv_idx++;
+
       if( Is_Of_Type<float>( arg ) ) {
-        parammeters->timestep = std::stof( std::string( argv[ argv_idx + 1 ] ) );
-        argv_idx++;
+        parameters->timestep = std::stof( arg );
+      }
+      else {
+        std::cout << "ERROR : Timestep value is invalid" << std::cout;
       }
 
     }
     else if( arg == "--drift" ) {
 
+      arg = std::string( argv[ argv_idx + 1 ] );
+      argv_idx++;
+
       if( Is_Of_Type<float>( arg ) ) {
-        parammeters->drift = std::stof( std::string( argv[ argv_idx + 1 ] ) );
-        argv_idx++;
+        parameters->drift = std::stof( arg );
+      }
+      else {
+        std::cout << "ERROR : Drift value is invalid" << std::cout;
       }
 
     }
     else if( arg == "--mean-reversion-speed" ) {
 
+      arg = std::string( argv[ argv_idx + 1 ] );
+      argv_idx++;
+
       if( Is_Of_Type<float>( arg ) ) {
-        parammeters->mean_reversion_speed = std::stof( std::string( argv[ argv_idx + 1 ] ) );
-        argv_idx++;
+        parameters->mean_reversion_speed = std::stof( arg );
+      }
+      else {
+        std::cout << "ERROR : Mean reversion speed value is invalid" << std::cout;
       }
 
     }
     else if( arg == "--mean-reversion-level" ) {
 
+      arg = std::string( argv[ argv_idx + 1 ] );
+      argv_idx++;
+
       if( Is_Of_Type<float>( arg ) ) {
-        parammeters->mean_reversion_level = std::stof( std::string( argv[ argv_idx + 1 ] ) );
-        argv_idx++;
+        parameters->mean_reversion_level = std::stof( arg );
+      }
+      else {
+        std::cout << "ERROR : Mean reversion level value is invalid" << std::cout;
       }
 
     }
     else if( arg == "--volatility" ) {
 
+      arg = std::string( argv[ argv_idx + 1 ] );
+      argv_idx++;
+
       if( Is_Of_Type<float>( arg ) ) {
-        parammeters->volatility = std::stof( std::string( argv[ argv_idx + 1 ] ) );
-        argv_idx++;
+        parameters->volatility = std::stof( arg );
+      }
+      else {
+        std::cout << "ERROR : Volatility value is invalid" << std::cout;
       }
 
     }
     else if( arg == "--correlation-factor" ) {
 
+      arg = std::string( argv[ argv_idx + 1 ] );
+      argv_idx++;
+
       if( Is_Of_Type<float>( arg ) ) {
-        parammeters->correlation_factor = std::stof( std::string( argv[ argv_idx + 1 ] ) );
-        argv_idx++;
+        parameters->correlation_factor = std::stof( arg );
+      }
+      else {
+        std::cout << "ERROR : Correlation factor value is invalid" << std::cout;
       }
 
     }
     else if( arg == "--strike-price" ) {
 
+      arg = std::string( argv[ argv_idx + 1 ] );
+      argv_idx++;
+
       if( Is_Of_Type<float>( arg ) ) {
-        *strike_price = std::stof( std::string( argv[ argv_idx + 1 ] ) );
-        argv_idx++;
+        *strike_price = std::stof( arg );
+      }
+      else {
+        std::cout << "ERROR : Strike price value is invalid" << std::cout;
       }
 
     }
     else if( arg == "--discounting-rate" ) {
 
+      arg = std::string( argv[ argv_idx + 1 ] );
+      argv_idx++;
+
       if( Is_Of_Type<float>( arg ) ) {
-        *discounting_rate = std::stof( std::string( argv[ argv_idx + 1 ] ) );
-        argv_idx++;
+        *discounting_rate = std::stof( arg );
+      }
+      else {
+        std::cout << "ERROR : Discounting rate value is invalid" << std::cout;
       }
 
     }
