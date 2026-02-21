@@ -54,9 +54,12 @@ int main( int argc, char** argv ) {
   float strike_price = MMCOP_DEFAULT_STRIKE_PRICE;
   float discounting_rate = MMCOP_DEFAULT_DISCOUNTING_RATE;
 
+  IO::Parse_Parameters_From_Arguments( argc, argv, &total_runs, &total_timesteps,
+                                       &seed, &do_write_to_file, &parameters,
+                                       &strike_price, &discounting_rate ) ) {
+
   std::vector<float> price_paths;
   float call_price;
-
 
   std::cout << "Running Default Single Threaded Test : " << std::endl;
   Print_Parameters( total_runs, total_timesteps, seed, do_write_to_file, parameters, strike_price, discounting_rate );
@@ -67,9 +70,9 @@ int main( int argc, char** argv ) {
   std::cout << std::endl;
 
 
-  parameters.initial_variance /= 2;
+  parameters.initial_variance /= 2.0;
   parameters.mean_reversion_speed *= 1.5;
-  parameters.volatility /= 10;
+  parameters.volatility /= 10.0;
 
   std::cout << "Running Calm Single Threaded Test : " << std::endl;
   Print_Parameters( total_runs, total_timesteps, seed, do_write_to_file, parameters, strike_price, discounting_rate );
@@ -80,9 +83,9 @@ int main( int argc, char** argv ) {
   std::cout << std::endl;
 
 
-  parameters.initial_variance = MMCOP_DEFAULT_INITIAL_VARIANCE;
-  parameters.mean_reversion_speed = MMCOP_DEFAULT_MEAN_REVERSION_SPEED;
-  parameters.volatility = MMCOP_DEFAULT_VOLATILITY;
+  parameters.initial_variance *= 2.0;
+  parameters.mean_reversion_speed /= 1.5;
+  parameters.volatility *= 10.0;
 
   std::cout << "Running Default Multi Threaded Test : " << std::endl;
   Print_Parameters( total_runs, total_timesteps, seed, do_write_to_file, parameters, strike_price, discounting_rate );
