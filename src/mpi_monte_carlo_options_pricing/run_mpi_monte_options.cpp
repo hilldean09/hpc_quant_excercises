@@ -2,6 +2,7 @@
 
 #include "./pre_controls.hpp"
 #include "./mpi_monte_options.hpp"
+#include "./io_mpi_monte_options.hpp"
 
 #include <mpi.h>
 #include <iostream>

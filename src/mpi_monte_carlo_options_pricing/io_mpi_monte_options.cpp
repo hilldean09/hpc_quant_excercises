@@ -1,6 +1,7 @@
 
 #include "./io_mpi_monte_options.hpp"
 
+#include <iostream>
 #include <string>
 
 namespace MPI_MONTE_OPTIONS {
@@ -43,10 +44,10 @@ bool Parse_Parameters_From_Arguments( int argc, char* argv[],
       parameter_args_detected = true;
 
       if( arg == "true" || arg == "True" ) {
-        do_write_to_file = true;
+        *do_write_to_file = true;
       }
       else if( arg == "false" || arg == "False" ) {
-        do_write_to_file = false;
+        *do_write_to_file = false;
       }
       else {
 
@@ -65,7 +66,7 @@ bool Parse_Parameters_From_Arguments( int argc, char* argv[],
         *total_runs = std::stoull( arg );
       }
       else {
-        std::cout << "ERROR : Total runs value is invalid" << std::cout;
+        std::cout << "ERROR : Total runs value is invalid" << std::endl;
       }
 
     }
@@ -79,7 +80,7 @@ bool Parse_Parameters_From_Arguments( int argc, char* argv[],
         *total_timesteps = std::stoull( arg );
       }
       else {
-        std::cout << "ERROR : Total timesteps value is invalid" << std::cout;
+        std::cout << "ERROR : Total timesteps value is invalid" << std::endl;
       }
 
     }
@@ -93,7 +94,7 @@ bool Parse_Parameters_From_Arguments( int argc, char* argv[],
         *seed = std::stoull( arg );
       }
       else {
-        std::cout << "ERROR : Seed value is invalid" << std::cout;
+        std::cout << "ERROR : Seed value is invalid" << std::endl;
       }
 
     }
@@ -107,7 +108,7 @@ bool Parse_Parameters_From_Arguments( int argc, char* argv[],
         parameters->initial_price = std::stof( arg );
       }
       else {
-        std::cout << "ERROR : Initial price value is invalid" << std::cout;
+        std::cout << "ERROR : Initial price value is invalid" << std::endl;
       }
 
     }
@@ -121,7 +122,7 @@ bool Parse_Parameters_From_Arguments( int argc, char* argv[],
         parameters->initial_variance = std::stof( arg );
       }
       else {
-        std::cout << "ERROR : Initial variance value is invalid" << std::cout;
+        std::cout << "ERROR : Initial variance value is invalid" << std::endl;
       }
 
     }
@@ -135,7 +136,7 @@ bool Parse_Parameters_From_Arguments( int argc, char* argv[],
         parameters->timestep = std::stof( arg );
       }
       else {
-        std::cout << "ERROR : Timestep value is invalid" << std::cout;
+        std::cout << "ERROR : Timestep value is invalid" << std::endl;
       }
 
     }
@@ -149,7 +150,7 @@ bool Parse_Parameters_From_Arguments( int argc, char* argv[],
         parameters->drift = std::stof( arg );
       }
       else {
-        std::cout << "ERROR : Drift value is invalid" << std::cout;
+        std::cout << "ERROR : Drift value is invalid" << std::endl;
       }
 
     }
@@ -163,7 +164,7 @@ bool Parse_Parameters_From_Arguments( int argc, char* argv[],
         parameters->mean_reversion_speed = std::stof( arg );
       }
       else {
-        std::cout << "ERROR : Mean reversion speed value is invalid" << std::cout;
+        std::cout << "ERROR : Mean reversion speed value is invalid" << std::endl;
       }
 
     }
@@ -177,7 +178,7 @@ bool Parse_Parameters_From_Arguments( int argc, char* argv[],
         parameters->mean_reversion_level = std::stof( arg );
       }
       else {
-        std::cout << "ERROR : Mean reversion level value is invalid" << std::cout;
+        std::cout << "ERROR : Mean reversion level value is invalid" << std::endl;
       }
 
     }
@@ -191,7 +192,7 @@ bool Parse_Parameters_From_Arguments( int argc, char* argv[],
         parameters->volatility = std::stof( arg );
       }
       else {
-        std::cout << "ERROR : Volatility value is invalid" << std::cout;
+        std::cout << "ERROR : Volatility value is invalid" << std::endl;
       }
 
     }
@@ -205,7 +206,7 @@ bool Parse_Parameters_From_Arguments( int argc, char* argv[],
         parameters->correlation_factor = std::stof( arg );
       }
       else {
-        std::cout << "ERROR : Correlation factor value is invalid" << std::cout;
+        std::cout << "ERROR : Correlation factor value is invalid" << std::endl;
       }
 
     }
@@ -219,7 +220,7 @@ bool Parse_Parameters_From_Arguments( int argc, char* argv[],
         *strike_price = std::stof( arg );
       }
       else {
-        std::cout << "ERROR : Strike price value is invalid" << std::cout;
+        std::cout << "ERROR : Strike price value is invalid" << std::endl;
       }
 
     }
@@ -233,7 +234,7 @@ bool Parse_Parameters_From_Arguments( int argc, char* argv[],
         *discounting_rate = std::stof( arg );
       }
       else {
-        std::cout << "ERROR : Discounting rate value is invalid" << std::cout;
+        std::cout << "ERROR : Discounting rate value is invalid" << std::endl;
       }
 
     }

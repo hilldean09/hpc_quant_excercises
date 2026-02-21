@@ -1,7 +1,7 @@
 
 target_sources( mpi_monte_options_lib
   PUBLIC
-    mpi_monte_options.cpp
+    mpi_monte_options.cpp io_mpi_monte_options.cpp
 )
 
 # Main executable
