@@ -8,6 +8,7 @@ A collection of my exercises in high-performance computing and low latency progr
 - Includes a Python script (```script_mpi_monte_options```) to visualise the price walks from the written data within output directories.
 
 **Executables Available**
+- ```run_mpi_monte_options```
 - ```test_mpi_monte_options```
 - ```benchmark_mpi_monte_options```
 
