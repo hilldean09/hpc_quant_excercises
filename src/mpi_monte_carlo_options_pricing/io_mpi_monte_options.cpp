@@ -35,7 +35,7 @@ bool Parse_Parameters_From_Arguments( int argc, char* argv[],
   *strike_price = MMCOP_DEFAULT_STRIKE_PRICE;
   *discounting_rate = MMCOP_DEFAULT_DISCOUNTING_RATE;
 
-  for( int argv_idx = 0; argv_idx < argc; argv_idx++ ) {
+  for( int argv_idx = 1; argv_idx < argc; argv_idx++ ) {
     arg = std::string( argv[ argv_idx ] );
 
     if( arg == "--write-to-file" ) {
@@ -70,7 +70,7 @@ bool Parse_Parameters_From_Arguments( int argc, char* argv[],
       }
 
     }
-    else if( arg == "--total_timesteps" ) {
+    else if( arg == "--total-timesteps" ) {
 
       arg = std::string( argv[ argv_idx + 1 ] );
       argv_idx++;

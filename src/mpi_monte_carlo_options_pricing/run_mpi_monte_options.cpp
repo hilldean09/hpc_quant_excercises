@@ -262,25 +262,6 @@ int main( int argc, char* argv[] ) {
     }
 
   }
-  else {
-
-    // Default initialisation
-    do_write_to_file = false;
-    total_runs = MMCOP_DEFAULT_TOTAL_RUNS;
-    total_timesteps = MMCOP_DEFAULT_TOTAL_TIMESTEPS;
-    parameters.timestep = MMCOP_DEFAULT_TIMESTEP;
-    seed = MMCOP_DEFAULT_SEED;
-    parameters.initial_price = MMCOP_DEFAULT_INITIAL_PRICE;
-    parameters.initial_variance = MMCOP_DEFAULT_INITIAL_VARIANCE;
-    parameters.drift = MMCOP_DEFAULT_DRIFT;
-    parameters.mean_reversion_speed = MMCOP_DEFAULT_MEAN_REVERSION_SPEED;
-    parameters.mean_reversion_level = MMCOP_DEFAULT_MEAN_REVERSION_LEVEL;
-    parameters.volatility = MMCOP_DEFAULT_VOLATILITY;
-    parameters.correlation_factor = MMCOP_DEFAULT_CORRELATION_FACTOR;
-    strike_price = MMCOP_DEFAULT_STRIKE_PRICE;
-    discounting_rate = MMCOP_DEFAULT_DISCOUNTING_RATE;
-
-  }
   // Parameter Initialisation End //
 
   Share_Parameters_Over_MPI( &total_runs,
