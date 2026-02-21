@@ -260,7 +260,7 @@ float Run_Full_MPI_Simulation( unsigned long long total_runs,
 
   // Call price reduction (i.e. summing into rank 0 through all
   // other ranks
-  float call_price_recepetion_buffer;
+  float call_price_recepetion_buffer = 0;
   for( int sending_rank = 1; sending_rank < size_mpi; sending_rank++ ) {
 
     // Recieving
@@ -269,10 +269,10 @@ float Run_Full_MPI_Simulation( unsigned long long total_runs,
 
       call_price += call_price_recepetion_buffer;
     }
+
     // Sending
     else if( rank_mpi == sending_rank ) {
-      // TODO: Investigate if call price reception buffer is correct here
-      MPI_Send( &call_price_recepetion_buffer, 1, MPI_FLOAT, 0, MMCOP_MPI_Tags::CALL_PRICE_REDUCTION, MPI_COMM_WORLD );
+      MPI_Send( &call_price, 1, MPI_FLOAT, 0, MMCOP_MPI_Tags::CALL_PRICE_REDUCTION, MPI_COMM_WORLD );
     }
 
   }
@@ -300,7 +300,10 @@ void Share_Parameters_Over_MPI( unsigned long long* total_runs,
                                 float* strike_price,
                                 float* discounting_rate ) {
 
-  if( this_rank == 0 ) {
+  int rank_mpi;
+  MPI_Comm_rank( MPI_COMM_WORLD, &rank_mpi );
+
+  if( rank_mpi == 0 ) {
 
     Send_Parameters_To_Other_Ranks( total_runs, total_timesteps, seed, 
                                     do_write_to_file, parameters, strike_price, discounting_rate );
@@ -345,6 +348,8 @@ void Send_Parameters_To_Other_Ranks( unsigned long long* total_runs,
     MPI_Send( &( parameters->mean_reversion_level ), 1, MPI_FLOAT, other_rank, MMCOP_MPI_Tags::PARAMETER_SHARING, MPI_COMM_WORLD );
     MPI_Send( &( parameters->volatility ), 1, MPI_FLOAT, other_rank, MMCOP_MPI_Tags::PARAMETER_SHARING, MPI_COMM_WORLD );
     MPI_Send( &( parameters->correlation_factor ), 1, MPI_FLOAT, other_rank, MMCOP_MPI_Tags::PARAMETER_SHARING, MPI_COMM_WORLD );
+    MPI_Send( strike_price, 1, MPI_FLOAT, other_rank, MMCOP_MPI_Tags::PARAMETER_SHARING, MPI_COMM_WORLD );
+    MPI_Send( discounting_rate, 1, MPI_FLOAT, other_rank, MMCOP_MPI_Tags::PARAMETER_SHARING, MPI_COMM_WORLD );
 
   }
 
@@ -383,6 +388,8 @@ void Recieve_Parameters_From_Root_Rank( unsigned long long* total_runs,
   MPI_Recv( &( parameters->mean_reversion_level ), 1, MPI_FLOAT, 0, MMCOP_MPI_Tags::PARAMETER_SHARING, MPI_COMM_WORLD, &status_mpi  );
   MPI_Recv( &( parameters->volatility ), 1, MPI_FLOAT, 0, MMCOP_MPI_Tags::PARAMETER_SHARING, MPI_COMM_WORLD, &status_mpi  );
   MPI_Recv( &( parameters->correlation_factor ), 1, MPI_FLOAT, 0, MMCOP_MPI_Tags::PARAMETER_SHARING, MPI_COMM_WORLD, &status_mpi  );
+  MPI_Recv( strike_price, 1, MPI_FLOAT, 0, MMCOP_MPI_Tags::PARAMETER_SHARING, MPI_COMM_WORLD, &status_mpi  );
+  MPI_Recv( discounting_rate, 1, MPI_FLOAT, 0, MMCOP_MPI_Tags::PARAMETER_SHARING, MPI_COMM_WORLD, &status_mpi  );
 
   #else
   std::cout << "Error : MPI is not enabled" << std::endl;

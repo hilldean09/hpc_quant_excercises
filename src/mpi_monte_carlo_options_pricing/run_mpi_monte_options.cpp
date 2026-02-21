@@ -134,7 +134,7 @@ bool Get_Bool_From_User( std::string question_string ) {
 }
 
 
-void User_Parameter_Initialisation( unsigned long long* total_runs, unsigned long long* total_timesteps, int* seed, 
+void User_Parameter_Initialisation( unsigned long long* total_runs, unsigned long long* total_timesteps, unsigned long long* seed, 
                                     bool* do_write_to_file, Heston_Parameters* parameters, 
                                     float* strike_price, float* discounting_rate ) {
 
@@ -173,7 +173,7 @@ void User_Parameter_Initialisation( unsigned long long* total_runs, unsigned lon
     *total_runs = Get_Parameter_From_User<unsigned long long>( "Total Runs", "Unsigned Long Long", MMCOP_DEFAULT_TOTAL_RUNS );
     *total_timesteps = Get_Parameter_From_User<unsigned long long>( "Total Timesteps", "Unsigned Long Long", MMCOP_DEFAULT_TOTAL_TIMESTEPS );
     parameters->timestep = Get_Parameter_From_User<float>( "Timestep", "Float", MMCOP_DEFAULT_TIMESTEP );
-    *seed = Get_Parameter_From_User<int>( "Seed", "Int", MMCOP_DEFAULT_SEED );
+    *seed = Get_Parameter_From_User<unsigned long long>( "Seed", "Unsigned Long Long", MMCOP_DEFAULT_SEED );
     parameters->initial_price = Get_Parameter_From_User<float>( "Initial Price", "Float", MMCOP_DEFAULT_INITIAL_PRICE );
     parameters->initial_variance = Get_Parameter_From_User<float>( "Initial Variance", "Float", MMCOP_DEFAULT_INITIAL_VARIANCE );
     parameters->drift = Get_Parameter_From_User<float>( "Drift Factor", "Float", MMCOP_DEFAULT_DRIFT );
@@ -221,7 +221,7 @@ int main( int argc, char* argv[] ) {
   // Parameter Declaration
   unsigned long long total_runs;
   unsigned long long total_timesteps;
-  int seed;
+  unsigned long long seed;
   bool do_write_to_file;
   Heston_Parameters parameters;
   float strike_price;
@@ -299,6 +299,7 @@ int main( int argc, char* argv[] ) {
     std::cout << "\tCall price : " << std::to_string( call_price ) << "\n";
     std::cout << std::endl;
   }
+
   MPI_Finalize();
 
   return 0;
