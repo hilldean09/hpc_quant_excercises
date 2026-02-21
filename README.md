@@ -25,10 +25,10 @@ A collection of my exercise in high-performance computing and low latency progra
 To build any given executable (relevant scripts will be copied alongside them), first the repository must be cloned and a build directory made. This can be done via:
 ```bash
 # Clone the repository
-git clone https://github.com/hilldean09/hpc_quant_excercises.git
+git clone https://github.com/hilldean09/hpc_quant_exercises.git
 
 # Enter the repository then create and enter a subdirectory named "build"
-cd hpc_quant_excercises
+cd hpc_quant_exercises
 
 # Initialise git submodules
 git submodule init
