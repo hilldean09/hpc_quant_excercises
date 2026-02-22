@@ -1,0 +1,41 @@
+2026-02-22T15:09:41+08:00
+Running .,benchmark_mpi_monte_options
+Run on (8 X 4500 MHz CPU s)
+CPU Caches:
+  L1 Data 32 KiB (x4)
+  L1 Instruction 32 KiB (x4)
+  L2 Unified 256 KiB (x4)
+  L3 Unified 8192 KiB (x1)
+Load Average: 0.20, 0.27, 0.48
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+name,iterations,real_time,cpu_time,time_unit,bytes_per_second,items_per_second,label,error_occurred,error_message
+BM_Run_Single_Threaded_Simulation,64,546,1.27747e+06,1.25899e+06,ns,,,,,
+BM_Run_Single_Threaded_Simulation,128,261,2.64442e+06,2.62186e+06,ns,,,,,
+BM_Run_Single_Threaded_Simulation,256,134,5.31691e+06,5.26863e+06,ns,,,,,
+BM_Run_Single_Threaded_Simulation,512,65,1.06402e+07,1.05193e+07,ns,,,,,
+BM_Run_Single_Threaded_Simulation,1024,34,2.10507e+07,2.08989e+07,ns,,,,,
+BM_Run_Single_Threaded_Simulation,2048,17,4.15258e+07,4.12803e+07,ns,,,,,
+BM_Run_Single_Threaded_Simulation,4096,8,8.48835e+07,8.43498e+07,ns,,,,,
+BM_Run_Single_Threaded_Simulation,8192,4,1.66591e+08,1.64275e+08,ns,,,,,
+BM_Run_Single_Threaded_Simulation,16384,2,3.29503e+08,3.24883e+08,ns,,,,,
+BM_Run_Single_Threaded_Simulation,32768,1,6.70645e+08,6.60863e+08,ns,,,,,
+BM_Run_Single_Threaded_Simulation,65536,1,1.32897e+09,1.32364e+09,ns,,,,,
+BM_Run_Single_Threaded_Simulation,131072,1,2.66558e+09,2.6598e+09,ns,,,,,
+BM_Run_Single_Threaded_Simulation,262144,1,5.30928e+09,5.27338e+09,ns,,,,,
+BM_Run_Single_Threaded_Simulation,524288,1,1.06444e+10,1.04944e+10,ns,,,,,
+BM_Run_Single_Threaded_Simulation,1000000,1,2.02308e+10,2.00549e+10,ns,,,,,
+BM_Run_Multi_Threaded_Simulation,64,2048,342729,342316,ns,,,,,
+BM_Run_Multi_Threaded_Simulation,128,1007,686468,685612,ns,,,,,
+BM_Run_Multi_Threaded_Simulation,256,492,1.37938e+06,1.37726e+06,ns,,,,,
+BM_Run_Multi_Threaded_Simulation,512,256,2.73077e+06,2.72718e+06,ns,,,,,
+BM_Run_Multi_Threaded_Simulation,1024,122,5.45886e+06,5.45086e+06,ns,,,,,
+BM_Run_Multi_Threaded_Simulation,2048,64,1.08777e+07,1.08641e+07,ns,,,,,
+BM_Run_Multi_Threaded_Simulation,4096,32,2.21023e+07,2.20734e+07,ns,,,,,
+BM_Run_Multi_Threaded_Simulation,8192,16,4.49488e+07,4.4868e+07,ns,,,,,
+BM_Run_Multi_Threaded_Simulation,16384,8,8.82006e+07,8.80894e+07,ns,,,,,
+BM_Run_Multi_Threaded_Simulation,32768,4,1.81883e+08,1.81657e+08,ns,,,,,
+BM_Run_Multi_Threaded_Simulation,65536,2,3.63487e+08,3.62985e+08,ns,,,,,
+BM_Run_Multi_Threaded_Simulation,131072,1,7.34353e+08,7.26631e+08,ns,,,,,
+BM_Run_Multi_Threaded_Simulation,262144,1,1.45979e+09,1.44921e+09,ns,,,,,
+BM_Run_Multi_Threaded_Simulation,524288,1,2.91774e+09,2.88062e+09,ns,,,,,
+BM_Run_Multi_Threaded_Simulation,1000000,1,5.54974e+09,5.5366e+09,ns,,,,,
