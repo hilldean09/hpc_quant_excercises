@@ -27,7 +27,7 @@ To build any given executable (relevant scripts will be copied alongside them), 
 # Clone the repository
 git clone https://github.com/hilldean09/hpc_quant_exercises.git
 
-# Enter the repository then create and enter a subdirectory named "build"
+# Enter the repository
 cd hpc_quant_exercises
 
 # Initialise git submodules
