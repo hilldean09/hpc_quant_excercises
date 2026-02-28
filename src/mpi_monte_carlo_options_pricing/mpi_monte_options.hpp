@@ -68,7 +68,8 @@ float Run_Full_MPI_Simulation( unsigned long long total_runs,
                                bool do_write_to_file,
                                Heston_Parameters parameters,
                                float strike_price,
-                               float discounting_rate );
+                               float discounting_rate,
+                               int version_to_use = MMCOP_DEFAULT_VERSION );
 
 void Share_Parameters_Over_MPI( unsigned long long* total_runs,
                                 unsigned long long* total_timesteps,

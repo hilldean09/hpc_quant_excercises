@@ -4,7 +4,7 @@
 #define MMCOP_PRE_CONTROLS
 
 // Function controls
-
+#define MMCOP_DEFAULT_VERSION 0
 
 // Parameters
 #define MMCOP_DEFAULT_TOTAL_RUNS 100

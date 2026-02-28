@@ -228,7 +228,8 @@ float Run_Full_MPI_Simulation( unsigned long long total_runs,
                                bool do_write_to_file,
                                Heston_Parameters parameters,
                                float strike_price,
-                               float discounting_rate ) {
+                               float discounting_rate,
+                               int version_to_use ) {
 
   float call_price = 0.0;
 
