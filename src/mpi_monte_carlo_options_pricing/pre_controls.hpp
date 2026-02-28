@@ -3,6 +3,9 @@
 #ifndef MMCOP_PRE_CONTROLS
 #define MMCOP_PRE_CONTROLS
 
+// Function controls
+
+
 // Parameters
 #define MMCOP_DEFAULT_TOTAL_RUNS 100
 #define MMCOP_DEFAULT_TOTAL_TIMESTEPS 504
