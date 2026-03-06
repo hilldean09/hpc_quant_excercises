@@ -62,6 +62,15 @@ float Compute_Call_Price( std::vector<float>* price_paths,
                           float strike_price,
                           float discounting_rate );
 
+float General_Run_Rank_Simulation( unsigned long long total_runs,
+                                   unsigned long long total_timesteps,
+                                   unsigned long long seed,
+                                   Heston_Parameters parameters,
+                                   float strike_price,
+                                   float discounting_rate,
+                                   bool do_multi_threaded = MMCOP_DEFAULT_DO_MULTI_THREADED,
+                                   int version_to_use = MMCOP_DEFAULT_VERSION );
+
 float Run_Full_MPI_Simulation( unsigned long long total_runs,
                                unsigned long long total_timesteps,
                                unsigned long long seed,

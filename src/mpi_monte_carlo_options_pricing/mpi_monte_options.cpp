@@ -221,6 +221,25 @@ float Compute_Call_Price( std::vector<float>* price_paths,
   return call_price;
 }
 
+float General_Run_Rank_Simulation( unsigned long long total_runs,
+                                   unsigned long long total_timesteps,
+                                   unsigned long long seed,
+                                   Heston_Parameters parameters,
+                                   float strike_price,
+                                   float discounting_rate,
+                                   bool do_multi_threaded,
+                                   int version_to_use ) {
+
+  switch( version_to_use ) {
+    case 0:
+      std::vector<float> price_paths = Run_Multi_Threaded_Simulation( total_runs, total_timesteps, seed, do_write_to_file, parameters );
+      call_price = Compute_Call_Price( &price_paths, total_runs, total_timesteps, parameters.timestep, strike_price, discounting_rate );
+      break;
+
+  }
+
+  return call_price;
+}
 
 float Run_Full_MPI_Simulation( unsigned long long total_runs,
                                unsigned long long total_timesteps,
@@ -256,8 +275,10 @@ float Run_Full_MPI_Simulation( unsigned long long total_runs,
 
   // Running simulation, scoped to accelerate vector deletion
   {
-    std::vector<float> price_paths = Run_Multi_Threaded_Simulation( total_runs, total_timesteps, seed, do_write_to_file, parameters );
-    call_price = Compute_Call_Price( &price_paths, total_runs, total_timesteps, parameters.timestep, strike_price, discounting_rate );
+    call_price = General_Run_Rank_Simulation( total_runs, total_timesteps,
+                                              seed, parameters,
+                                              strike_price, discounting_rate,
+                                              do_multi_threaded, version_to_use );
   }
 
 
