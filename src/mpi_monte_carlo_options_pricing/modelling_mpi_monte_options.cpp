@@ -10,17 +10,13 @@ namespace MPI_MONTE_OPTIONS {
 namespace VERSION_1 {
 
 // Reducing heap memory allocation
-void Run_Multi_Threaded_Simulation_V1( std::vector<float>* end_prices_array_ptr,
-                                       unsigned long long total_runs,
+float Run_Multi_Threaded_Simulation_V1( unsigned long long total_runs,
                                        unsigned long long total_timesteps,
                                        unsigned long long seed,
                                        bool do_write_to_file,
                                        Heston_Parameters parameters ) {
 
-  if( end_prices_array.size() < total_runs ) {
-    std::cout << "ERROR : End prices array of inadequate size" << std::endl;
-    return;
-  }
+  output_call_price = 0.0;
 
   if( do_write_to_file ) {
     std::cout << "ERROR : Write to file not supported in this implementation" << std::endl;
@@ -40,14 +36,16 @@ void Run_Multi_Threaded_Simulation_V1( std::vector<float>* end_prices_array_ptr,
     #pragma omp for schedule( static ) 
     for( unsigned long long run = 0; run < total_runs; run++ ) {
 
-      ( *end_prices_array_ptr )[ run ] = Simulate_Asset_Price_Walk_V1( total_timesteps,
-                                                                       &random_engine,
-                                                                       &normal_distribution_gen,
-                                                                       parameters );
+      output_call_price += Simulate_Asset_Price_Walk_V1( total_timesteps,
+                                              &random_engine,
+                                              &normal_distribution_gen,
+                                              parameters );
 
     }
 
   }
+
+  return ( output_call_price / total_runs );
 
 }
 
