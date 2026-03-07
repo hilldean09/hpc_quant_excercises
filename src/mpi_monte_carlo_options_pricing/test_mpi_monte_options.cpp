@@ -58,7 +58,7 @@ int main( int argc, char** argv ) {
 
   IO::Parse_Parameters_From_Arguments( argc, argv, &total_runs, &total_timesteps,
                                        &seed, &do_write_to_file, &parameters,
-                                       &strike_price, &discounting_rate ) ) {
+                                       &strike_price, &discounting_rate );
 
   std::vector<float> price_paths;
   float call_price;

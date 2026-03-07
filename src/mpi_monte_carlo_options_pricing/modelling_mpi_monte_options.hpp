@@ -20,7 +20,9 @@ float Run_Multi_Threaded_Simulation_V1( unsigned long long total_runs,
                                         unsigned long long total_timesteps,
                                         unsigned long long seed,
                                         bool do_write_to_file,
-                                        Heston_Parameters parameters );
+                                        Heston_Parameters parameters,
+                                        float strike_price,
+                                        float discounting_rate );
 
 float Simulate_Asset_Price_Walk_V1( unsigned long long total_timesteps,
                                     std::mt19937_64* random_engine,

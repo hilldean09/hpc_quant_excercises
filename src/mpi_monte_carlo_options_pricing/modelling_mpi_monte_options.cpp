@@ -20,15 +20,18 @@ float Run_Multi_Threaded_Simulation_V1( unsigned long long total_runs,
                                        unsigned long long total_timesteps,
                                        unsigned long long seed,
                                        bool do_write_to_file,
-                                       Heston_Parameters parameters ) {
+                                       Heston_Parameters parameters,
+                                       float strike_price,
+                                       float discounting_rate ) {
 
   float output_call_price = 0.0;
+  float working_call_price = 0.0;
 
   if( do_write_to_file ) {
     std::cout << "ERROR : Write to file not supported in this implementation" << std::endl;
   }
 
-  #pragma omp parallel default( none ) private( output_call_price ) shared( total_runs, total_timesteps, seed, do_write_to_file, parameters ) num_threads( MMCOP_NUMBER_OF_THREADS )
+  #pragma omp parallel default( none ) private( working_call_price ) shared( total_runs, total_timesteps, seed, do_write_to_file, parameters ) num_threads( MMCOP_NUMBER_OF_THREADS )
   {
     int thread_idx = omp_get_thread_num();
 
@@ -42,17 +45,22 @@ float Run_Multi_Threaded_Simulation_V1( unsigned long long total_runs,
     #pragma omp for schedule( static ) 
     for( unsigned long long run = 0; run < total_runs; run++ ) {
 
-      output_call_price += Simulate_Asset_Price_Walk_V1( total_timesteps,
-                                              &random_engine,
-                                              &normal_distribution_gen,
-                                              parameters );
+      working_call_price = std::max( Simulate_Asset_Price_Walk_V1( total_timesteps, &random_engine, &normal_distribution_gen, parameters )
+                                      - strike_price, ( float ) 0.0 );
+
+      // Summing call price
+      #pragma omp atomic update
+      {
+        output_call_price += working_call_price;
+      }
 
     }
 
   }
 
-  return ( output_call_price / total_runs );
+  output_call_price = ( std::pow( discounting_rate, total_timesteps * parameters.timestep ) * output_call_price ) / total_runs;
 
+  return output_call_price;
 }
 
 float Simulate_Asset_Price_Walk_V1( unsigned long long total_timesteps,
