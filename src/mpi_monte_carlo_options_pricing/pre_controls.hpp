@@ -4,7 +4,7 @@
 #define MMCOP_PRE_CONTROLS
 
 // Function controls
-#define MMCOP_DEFAULT_VERSION 0
+#define MMCOP_DEFAULT_VERSION 1
 #define MMCOP_DEFAULT_DO_MULTI_THREADED true
 
 // Parameters

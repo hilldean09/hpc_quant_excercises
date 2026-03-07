@@ -31,7 +31,7 @@ float Run_Multi_Threaded_Simulation_V1( unsigned long long total_runs,
     std::cout << "ERROR : Write to file not supported in this implementation" << std::endl;
   }
 
-  #pragma omp parallel default( none ) private( working_call_price ) shared( total_runs, total_timesteps, seed, do_write_to_file, parameters ) num_threads( MMCOP_NUMBER_OF_THREADS )
+  #pragma omp parallel default( none ) private( working_call_price ) shared( output_call_price, total_runs, total_timesteps, seed, do_write_to_file, parameters, strike_price, discounting_rate ) num_threads( MMCOP_NUMBER_OF_THREADS )
   {
     int thread_idx = omp_get_thread_num();
 
@@ -50,9 +50,7 @@ float Run_Multi_Threaded_Simulation_V1( unsigned long long total_runs,
 
       // Summing call price
       #pragma omp atomic update
-      {
-        output_call_price += working_call_price;
-      }
+      output_call_price += working_call_price;
 
     }
 

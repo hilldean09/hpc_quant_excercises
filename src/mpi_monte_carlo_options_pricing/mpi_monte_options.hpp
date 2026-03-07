@@ -3,6 +3,7 @@
 #ifndef MMMCOP_HEADER
 #define MMMCOP_HEADER
 
+
 #include "./pre_controls.hpp"
 
 #include <random>
@@ -81,6 +82,7 @@ float Run_Full_MPI_Simulation( unsigned long long total_runs,
                                Heston_Parameters parameters,
                                float strike_price,
                                float discounting_rate,
+                               bool do_multi_threaded = MMCOP_DEFAULT_DO_MULTI_THREADED,
                                int version_to_use = MMCOP_DEFAULT_VERSION );
 
 void Share_Parameters_Over_MPI( unsigned long long* total_runs,
