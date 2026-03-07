@@ -1,5 +1,6 @@
 
 #include "./pre_controls.hpp"
+#include "./modelling_mpi_monte_options.hpp"
 #include "./mpi_monte_options.hpp"
 #include "./io_mpi_monte_options.hpp"
 
@@ -57,7 +58,7 @@ int main( int argc, char** argv ) {
 
   IO::Parse_Parameters_From_Arguments( argc, argv, &total_runs, &total_timesteps,
                                        &seed, &do_write_to_file, &parameters,
-                                       &strike_price, &discounting_rate ) ) {
+                                       &strike_price, &discounting_rate );
 
   std::vector<float> price_paths;
   float call_price;
@@ -73,7 +74,7 @@ int main( int argc, char** argv ) {
 
   parameters.initial_variance /= 2.0;
   parameters.mean_reversion_speed *= 1.5;
-  parameters.volatility /= 10.0;
+  parameters.volatility /= 11.0;
 
   std::cout << "Running Calm Single Threaded Test : " << std::endl;
   Print_Parameters( total_runs, total_timesteps, seed, do_write_to_file, parameters, strike_price, discounting_rate );
@@ -92,6 +93,14 @@ int main( int argc, char** argv ) {
   Print_Parameters( total_runs, total_timesteps, seed, do_write_to_file, parameters, strike_price, discounting_rate );
   price_paths = Run_Multi_Threaded_Simulation( total_runs, total_timesteps, seed, do_write_to_file, parameters );
   call_price = Compute_Call_Price( &price_paths, total_runs, total_timesteps, parameters.timestep, strike_price, discounting_rate );
+  std::cout << "Test Results : \n";
+  std::cout << "\tCall price : " << std::to_string( call_price ) << "\n";
+  std::cout << std::endl;
+
+
+  std::cout << "Running Version 1 Multi Threaded Test : " << std::endl;
+  Print_Parameters( total_runs, total_timesteps, seed, do_write_to_file, parameters, strike_price, discounting_rate );
+  call_price = Run_Multi_Threaded_Simulation_V1( total_runs, total_timesteps, seed, do_write_to_file, parameters, strike_price, discounting_rate );
   std::cout << "Test Results : \n";
   std::cout << "\tCall price : " << std::to_string( call_price ) << "\n";
   std::cout << std::endl;

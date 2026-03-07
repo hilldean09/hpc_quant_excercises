@@ -282,7 +282,9 @@ int main( int argc, char* argv[] ) {
   call_price = Run_Full_MPI_Simulation( total_runs, total_timesteps,
                                         seed, do_write_to_file,
                                         parameters,
-                                        strike_price, discounting_rate );
+                                        strike_price, discounting_rate,
+                                        MMCOP_DEFAULT_DO_MULTI_THREADED,
+                                        MMCOP_DEFAULT_VERSION );
 
   if( this_rank == 0 ) {
     std::cout << "Results : \n";
