@@ -3,6 +3,8 @@
 #ifndef MMMCOP_HEADER
 #define MMMCOP_HEADER
 
+#include "./pre_controls.hpp"
+
 #include <random>
 
 namespace MPI_MONTE_OPTIONS {
