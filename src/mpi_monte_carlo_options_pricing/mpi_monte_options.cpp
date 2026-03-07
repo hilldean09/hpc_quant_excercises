@@ -1,5 +1,6 @@
 
 #include "./mpi_monte_options.hpp"
+#include "./modelling_mpi_monte_options.hpp"
 #include "./pre_controls.hpp"
 
 #include <cnpy.h>
@@ -224,6 +225,7 @@ float Compute_Call_Price( std::vector<float>* price_paths,
 float General_Run_Rank_Simulation( unsigned long long total_runs,
                                    unsigned long long total_timesteps,
                                    unsigned long long seed,
+                                   bool do_write_to_file,
                                    Heston_Parameters parameters,
                                    float strike_price,
                                    float discounting_rate,
@@ -232,8 +234,26 @@ float General_Run_Rank_Simulation( unsigned long long total_runs,
 
   switch( version_to_use ) {
     case 0:
-      std::vector<float> price_paths = Run_Multi_Threaded_Simulation( total_runs, total_timesteps, seed, do_write_to_file, parameters );
+      // Version 0
+      std::vector<float> price_paths;
+      if( do_multi_threaded ) {
+        price_paths = Run_Multi_Threaded_Simulation( total_runs, total_timesteps, seed, do_write_to_file, parameters );
+      }
+      else {
+        price_paths = Run_Single_Threaded_Simulation( total_runs, total_timesteps, seed, do_write_to_file, parameters );
+      }
+
       call_price = Compute_Call_Price( &price_paths, total_runs, total_timesteps, parameters.timestep, strike_price, discounting_rate );
+      break;
+
+    case 1:
+      // Version 1
+      if( do_multi_threaded ) {
+        call_price = VERSION_1::Run_Multi_Threaded_Simulation_V1( total_runs, total_timesteps, seed, do_write_to_file, parameters );
+      }
+      else {
+        std::cout << "ERROR : Single threaded not supported in this implementation" << std::endl;
+      }
       break;
 
   }
@@ -275,7 +295,7 @@ float Run_Full_MPI_Simulation( unsigned long long total_runs,
 
   // Running simulation, scoped to accelerate vector deletion
   {
-    call_price = General_Run_Rank_Simulation( total_runs, total_timesteps,
+    call_price = General_Run_Rank_Simulation( total_runs, total_timesteps, do_write_to_file,
                                               seed, parameters,
                                               strike_price, discounting_rate,
                                               do_multi_threaded, version_to_use );
