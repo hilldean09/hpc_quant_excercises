@@ -258,6 +258,16 @@ float General_Run_Rank_Simulation( unsigned long long total_runs,
       }
       break;
 
+    case 2:
+      // Version 2
+      if( do_multi_threaded ) {
+        call_price = Run_Multi_Threaded_Simulation_V2( total_runs, total_timesteps, seed, do_write_to_file, parameters, strike_price, discounting_rate );
+      }
+      else {
+        std::cout << "ERROR : Single threaded not supported in this implementation" << std::endl;
+      }
+      break;
+
   }
 
   return call_price;
