@@ -177,8 +177,9 @@ float Simulate_Asset_Price_Walk_V2( const unsigned long long total_timesteps,
     weiner_step_1 = root_timestep * ( *normal_distribution_gen )( *random_engine );
 
     // dS_t = drift * S_t * dt + sqrt( var ) * S_t * W_1
-    asset_price *= parameters.drift * parameters.timestep 
-                   + std::sqrt( variance ) * weiner_step_1; // Validated benefit over += method
+    asset_price += parameters.drift * asset_price * parameters.timestep 
+                   + std::sqrt( variance ) * asset_price * weiner_step_1; 
+    // NOTE: Validated benefit over += method timewise however causes the price to get stuck to 0
 
     // W_2 = p * W_1 + sqrt( 1 - p^2 ) * sqrt( dt ) * Z
     weiner_step_2 = parameters.correlation_factor * weiner_step_1
