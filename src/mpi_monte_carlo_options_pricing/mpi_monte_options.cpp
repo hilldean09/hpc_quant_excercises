@@ -232,10 +232,12 @@ float General_Run_Rank_Simulation( unsigned long long total_runs,
                                    bool do_multi_threaded,
                                    int version_to_use ) {
 
+  float call_price = 0.0;
+  std::vector<float> price_paths; // For version 1 only
+
   switch( version_to_use ) {
     case 0:
       // Version 0
-      std::vector<float> price_paths;
       if( do_multi_threaded ) {
         price_paths = Run_Multi_Threaded_Simulation( total_runs, total_timesteps, seed, do_write_to_file, parameters );
       }
@@ -249,7 +251,7 @@ float General_Run_Rank_Simulation( unsigned long long total_runs,
     case 1:
       // Version 1
       if( do_multi_threaded ) {
-        call_price = VERSION_1::Run_Multi_Threaded_Simulation( total_runs, total_timesteps, seed, do_write_to_file, parameters );
+        call_price = Run_Multi_Threaded_Simulation_V1( total_runs, total_timesteps, seed, do_write_to_file, parameters );
       }
       else {
         std::cout << "ERROR : Single threaded not supported in this implementation" << std::endl;
@@ -268,6 +270,7 @@ float Run_Full_MPI_Simulation( unsigned long long total_runs,
                                Heston_Parameters parameters,
                                float strike_price,
                                float discounting_rate,
+                               bool do_multi_threaded,
                                int version_to_use ) {
 
   float call_price = 0.0;

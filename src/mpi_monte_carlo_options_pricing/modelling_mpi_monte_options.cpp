@@ -1,28 +1,34 @@
 
+#include "./io_mpi_monte_options.hpp"
+#include "./mpi_monte_options.hpp"
 #include "./modelling_mpi_monte_options.hpp"
+#include "./pre_controls.hpp"
+
+#include <cnpy.h>
+#include <mpi.h>
+#include <omp.h>
 
 #include <string>
 #include <random>
+#include <iostream>
 
 namespace MPI_MONTE_OPTIONS {
 
 
-namespace VERSION_1 {
-
 // Reducing heap memory allocation
-float Run_Multi_Threaded_Simulation( unsigned long long total_runs,
+float Run_Multi_Threaded_Simulation_V1( unsigned long long total_runs,
                                        unsigned long long total_timesteps,
                                        unsigned long long seed,
                                        bool do_write_to_file,
                                        Heston_Parameters parameters ) {
 
-  output_call_price = 0.0;
+  float output_call_price = 0.0;
 
   if( do_write_to_file ) {
     std::cout << "ERROR : Write to file not supported in this implementation" << std::endl;
   }
 
-  #pragma omp parallel default( none ) shared( end_prices_array, total_runs, total_timesteps, seed, do_write_to_file, parameters ) num_threads( MMCOP_NUMBER_OF_THREADS )
+  #pragma omp parallel default( none ) private( output_call_price ) shared( total_runs, total_timesteps, seed, do_write_to_file, parameters ) num_threads( MMCOP_NUMBER_OF_THREADS )
   {
     int thread_idx = omp_get_thread_num();
 
@@ -49,7 +55,7 @@ float Run_Multi_Threaded_Simulation( unsigned long long total_runs,
 
 }
 
-float Simulate_Asset_Price_Walk( unsigned long long total_timesteps,
+float Simulate_Asset_Price_Walk_V1( unsigned long long total_timesteps,
                                     std::mt19937_64* random_engine,
                                     std::normal_distribution<float>* normal_distribution_gen,
                                     Heston_Parameters parameters ) {
@@ -90,8 +96,6 @@ float Simulate_Asset_Price_Walk( unsigned long long total_timesteps,
   return asset_price;
 
 }
-
-} // Version 1 namespace end
 
 
 

@@ -1,6 +1,6 @@
 
 #include "./mpi_monte_options.hpp"
-#include "./modelling_mpi_monte_options.cpp"
+#include "./modelling_mpi_monte_options.hpp"
 #include "./pre_controls.hpp"
 
 #include <benchmark/benchmark.h>
@@ -55,7 +55,7 @@ static void BM_Run_Multi_Threaded_Simulation_V1( benchmark::State& state ) {
   Heston_Parameters parameters = Construct_Parameters_Object( MMCOP_DEFAULT_INITIAL_PRICE, MMCOP_DEFAULT_INITIAL_VARIANCE, MMCOP_DEFAULT_TIMESTEP, MMCOP_DEFAULT_DRIFT, MMCOP_DEFAULT_MEAN_REVERSION_SPEED, MMCOP_DEFAULT_MEAN_REVERSION_LEVEL, MMCOP_DEFAULT_VOLATILITY, MMCOP_DEFAULT_CORRELATION_FACTOR ); 
 
   for( auto _ : state ) {
-    VERSION_1::Run_Multi_Threaded_Simulation( state.range( 0 ), total_timesteps, seed, do_write_to_file, parameters );
+    Run_Multi_Threaded_Simulation_V1( state.range( 0 ), total_timesteps, seed, do_write_to_file, parameters );
   }
 }
 
