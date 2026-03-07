@@ -100,7 +100,7 @@ int main( int argc, char** argv ) {
 
   std::cout << "Running Version 1 Multi Threaded Test : " << std::endl;
   Print_Parameters( total_runs, total_timesteps, seed, do_write_to_file, parameters, strike_price, discounting_rate );
-  call_price = Run_Multi_Threaded_Simulation_V1( total_runs, total_timesteps, seed, do_write_to_file, parameters );
+  call_price = Run_Multi_Threaded_Simulation_V1( total_runs, total_timesteps, seed, do_write_to_file, parameters, strike_price, discounting_rate );
   std::cout << "Test Results : \n";
   std::cout << "\tCall price : " << std::to_string( call_price ) << "\n";
   std::cout << std::endl;
