@@ -230,13 +230,13 @@ float Run_Multi_Threaded_Simulation_V3( unsigned long long total_runs,
     std::subtract_with_carry_engine<std::uint_fast64_t, 48, 5, 12> random_engine;
 
     random_engine.seed( seed + thread_idx * MMCOP_THREAD_SEED_MAGIC_NUMBER );
-    std::uniform_real_distributin<float> distribution_gen( -1.0, 1.0 );
+    std::uniform_real_distribution<float> uniform_distribution_gen( -1.0, 1.0 );
 
     // Parallelised simulation 
     #pragma omp for schedule( static ) 
     for( unsigned long long run = 0; run < total_runs; run++ ) {
 
-      working_call_price = std::max( Simulate_Asset_Price_Walk_V2( total_timesteps, &random_engine, &normal_distribution_gen, parameters )
+      working_call_price = std::max( Simulate_Asset_Price_Walk_V3( total_timesteps, &random_engine, &uniform_distribution_gen, parameters )
                                       - strike_price, ( float ) 0.0 );
 
       // Summing call price
@@ -255,7 +255,7 @@ float Run_Multi_Threaded_Simulation_V3( unsigned long long total_runs,
 
 float Simulate_Asset_Price_Walk_V3( const unsigned long long total_timesteps,
                                     std::subtract_with_carry_engine<std::uint_fast64_t, 48, 5, 12>* random_engine,
-                                    std::uniform_real_distributin<float>* random_engine,
+                                    std::uniform_real_distribution<float>* uniform_distribution_gen,
                                     const Heston_Parameters parameters ) {
 
   // NOTE: Only calculating root variance once per iteration via another
@@ -274,7 +274,7 @@ float Simulate_Asset_Price_Walk_V3( const unsigned long long total_timesteps,
     // Using the Heston stochastic volatility model
 
     // W_1 = sqrt( dt ) * Z
-    weiner_step_1 = root_timestep * ( *normal_distribution_gen )( *random_engine );
+    weiner_step_1 = root_timestep * ( *uniform_distribution_gen )( *random_engine );
 
     // dS_t = drift * S_t * dt + sqrt( var ) * S_t * W_1
     asset_price += parameters.drift * asset_price * parameters.timestep 
@@ -285,7 +285,7 @@ float Simulate_Asset_Price_Walk_V3( const unsigned long long total_timesteps,
     weiner_step_2 = parameters.correlation_factor * weiner_step_1
                     + root_one_minus_correlation_squared
                     * root_timestep
-                    * ( *normal_distribution_gen )( *random_engine );
+                    * ( *uniform_distribution_gen )( *random_engine );
 
     // dvar = k( Θ - var ) * dt + σ * sqrt( var ) * W_2
     variance += parameters.mean_reversion_speed 

@@ -57,7 +57,7 @@ float Run_Multi_Threaded_Simulation_V3( unsigned long long total_runs,
 
 float Simulate_Asset_Price_Walk_V3( const unsigned long long total_timesteps,
                                     std::subtract_with_carry_engine<std::uint_fast64_t, 48, 5, 12>* random_engine,
-                                    std::uniform_real_distributin<float>* random_engine,
+                                    std::uniform_real_distribution<float>* uniform_distribution_gen,
                                     const Heston_Parameters parameters );
 
 }
