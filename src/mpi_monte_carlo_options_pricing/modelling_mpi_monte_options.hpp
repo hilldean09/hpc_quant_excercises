@@ -45,6 +45,20 @@ float Simulate_Asset_Price_Walk_V2( unsigned long long total_timesteps,
                                     Heston_Parameters parameters );
 
 
+///// VERSION 3 /////
+
+float Run_Multi_Threaded_Simulation_V3( unsigned long long total_runs,
+                                       unsigned long long total_timesteps,
+                                       unsigned long long seed,
+                                       bool do_write_to_file,
+                                       Heston_Parameters parameters,
+                                       float strike_price,
+                                       float discounting_rate );
+
+float Simulate_Asset_Price_Walk_V3( const unsigned long long total_timesteps,
+                                    std::subtract_with_carry_engine<std::uint_fast64_t, 48, 5, 12>* random_engine,
+                                    std::uniform_real_distributin<float>* random_engine,
+                                    const Heston_Parameters parameters );
 
 }
 
