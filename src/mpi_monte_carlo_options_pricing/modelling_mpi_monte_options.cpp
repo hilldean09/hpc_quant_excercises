@@ -277,11 +277,13 @@ float Simulate_Asset_Price_Walk_V3( const unsigned long long total_timesteps,
   float root_one_minus_correlation_squared = std::sqrt( std::abs( 1 - parameters.correlation_factor * parameters.correlation_factor ) ); // Validated beneficial
 
   for( unsigned long long timestep = 0; timestep < total_timesteps; timestep++ ) {
-    // Box Muller setup
+    // Box Muller setup : Using polar method has notable innacuracy
     box_muller_u = ( *uniform_distribution_gen )( *random_engine );
     box_muller_v = ( *uniform_distribution_gen )( *random_engine );
 
     box_muller_s = std::sqrt( box_muller_u * box_muller_u + box_muller_v * box_muller_v );
+
+    // Ensuring s value validity
     while( box_muller_s == 0.0 || box_muller_s >= 1.0 ) {
       box_muller_u = ( *uniform_distribution_gen )( *random_engine );
       box_muller_v = ( *uniform_distribution_gen )( *random_engine );
