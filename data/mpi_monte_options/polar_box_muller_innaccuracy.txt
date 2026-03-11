@@ -1,0 +1,108 @@
+Running Default Single Threaded Test : 
+	Total runs : 100
+	Total timesteps : 504
+	Timestep : 0.003968
+	Seed : 1
+	Write to file? : 0
+	Initial price : 100.000000
+	Initial variance : 0.040000
+	Drift factor : 0.040000
+	Mean reversion speed : 1.200000
+	Mean reversion level : 0.050000
+	Volatility : 0.300000
+	Correlation factor : -0.600000
+	Strike price : 100.000000
+	Discounting rate : 0.950000
+Test Results : 
+	Call price : 19.196995
+
+Running Calm Single Threaded Test : 
+	Total runs : 100
+	Total timesteps : 504
+	Timestep : 0.003968
+	Seed : 1
+	Write to file? : 0
+	Initial price : 100.000000
+	Initial variance : 0.020000
+	Drift factor : 0.040000
+	Mean reversion speed : 1.800000
+	Mean reversion level : 0.050000
+	Volatility : 0.027273
+	Correlation factor : -0.600000
+	Strike price : 100.000000
+	Discounting rate : 0.950000
+Test Results : 
+	Call price : 19.781359
+
+Running Default Multi Threaded Test : 
+	Total runs : 100
+	Total timesteps : 504
+	Timestep : 0.003968
+	Seed : 1
+	Write to file? : 0
+	Initial price : 100.000000
+	Initial variance : 0.040000
+	Drift factor : 0.040000
+	Mean reversion speed : 1.200000
+	Mean reversion level : 0.050000
+	Volatility : 0.272727
+	Correlation factor : -0.600000
+	Strike price : 100.000000
+	Discounting rate : 0.950000
+Test Results : 
+	Call price : 13.854751
+
+Running Version 1 Multi Threaded Test : 
+	Total runs : 100
+	Total timesteps : 504
+	Timestep : 0.003968
+	Seed : 1
+	Write to file? : 0
+	Initial price : 100.000000
+	Initial variance : 0.040000
+	Drift factor : 0.040000
+	Mean reversion speed : 1.200000
+	Mean reversion level : 0.050000
+	Volatility : 0.272727
+	Correlation factor : -0.600000
+	Strike price : 100.000000
+	Discounting rate : 0.950000
+Test Results : 
+	Call price : 13.854748
+
+Running Version 2 Multi Threaded Test : 
+	Total runs : 100
+	Total timesteps : 504
+	Timestep : 0.003968
+	Seed : 1
+	Write to file? : 0
+	Initial price : 100.000000
+	Initial variance : 0.040000
+	Drift factor : 0.040000
+	Mean reversion speed : 1.200000
+	Mean reversion level : 0.050000
+	Volatility : 0.272727
+	Correlation factor : -0.600000
+	Strike price : 100.000000
+	Discounting rate : 0.950000
+Test Results : 
+	Call price : 13.854749
+
+Running Version 3 Multi Threaded Test : 
+	Total runs : 100
+	Total timesteps : 504
+	Timestep : 0.003968
+	Seed : 1
+	Write to file? : 0
+	Initial price : 100.000000
+	Initial variance : 0.040000
+	Drift factor : 0.040000
+	Mean reversion speed : 1.200000
+	Mean reversion level : 0.050000
+	Volatility : 0.272727
+	Correlation factor : -0.600000
+	Strike price : 100.000000
+	Discounting rate : 0.950000
+Test Results : 
+	Call price : 10.921041
+

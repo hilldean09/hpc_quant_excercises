@@ -40,10 +40,10 @@ void Print_Parameters( unsigned long long total_runs,
 int main( int argc, char** argv ) {
 
   // Parameters
-  unsigned long long total_runs = 100;
-  unsigned long long total_timesteps = 504;
-  unsigned long long seed = MMCOP_DEFAULT_SEED;
-  bool do_write_to_file = true;
+  unsigned long long total_runs;
+  unsigned long long total_timesteps;
+  unsigned long long seed;
+  bool do_write_to_file;
   Heston_Parameters parameters = Construct_Parameters_Object( MMCOP_DEFAULT_INITIAL_PRICE,
                                                               MMCOP_DEFAULT_INITIAL_VARIANCE,
                                                               MMCOP_DEFAULT_TIMESTEP,
@@ -56,9 +56,11 @@ int main( int argc, char** argv ) {
   float strike_price = MMCOP_DEFAULT_STRIKE_PRICE;
   float discounting_rate = MMCOP_DEFAULT_DISCOUNTING_RATE;
 
-  IO::Parse_Parameters_From_Arguments( argc, argv, &total_runs, &total_timesteps,
+  if( !IO::Parse_Parameters_From_Arguments( argc, argv, &total_runs, &total_timesteps,
                                        &seed, &do_write_to_file, &parameters,
-                                       &strike_price, &discounting_rate );
+                                       &strike_price, &discounting_rate ) ) {
+    seed += 1;
+  }
 
   std::vector<float> price_paths;
   float call_price;
