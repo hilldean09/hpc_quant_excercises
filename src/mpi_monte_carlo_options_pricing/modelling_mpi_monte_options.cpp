@@ -228,9 +228,10 @@ float Run_Multi_Threaded_Simulation_V3( unsigned long long total_runs,
     // Deterministicly random componentry
     // Modifying seed deterministically per thread
     std::subtract_with_carry_engine<std::uint_fast64_t, 48, 5, 12> random_engine;
-
     random_engine.seed( seed + thread_idx * MMCOP_THREAD_SEED_MAGIC_NUMBER );
-    std::uniform_real_distribution<float> uniform_distribution_gen( -1.0, 1.0 );
+    
+    // Changing this alone while less accurate is significantly faster
+    std::uniform_real_distribution<float> uniform_distribution_gen( -1.0, 1.0 ); 
 
     // Parallelised simulation 
     #pragma omp for schedule( static ) 
@@ -266,15 +267,33 @@ float Simulate_Asset_Price_Walk_V3( const unsigned long long total_timesteps,
   float weiner_step_1;
   float weiner_step_2;
 
+  // Box Muller
+  float box_muller_u;
+  float box_muller_v;
+  float box_muller_s; // s = sqrt( u^2 + v^2 ) and must satisy 0 != s < 1 
+  float box_muller_coefficient;
+
   float root_timestep = std::sqrt( parameters.timestep ); // Validated beneficial
   float root_one_minus_correlation_squared = std::sqrt( std::abs( 1 - parameters.correlation_factor * parameters.correlation_factor ) ); // Validated beneficial
 
   for( unsigned long long timestep = 0; timestep < total_timesteps; timestep++ ) {
+    // Box Muller setup
+    box_muller_u = ( *uniform_distribution_gen )( *random_engine );
+    box_muller_v = ( *uniform_distribution_gen )( *random_engine );
+
+    // TODO: Fix nan error
+    box_muller_s = std::sqrt( box_muller_u * box_muller_u + box_muller_v * box_muller_v );
+    while( box_muller_s <= 0.0 || box_muller_s >= 1.0 ) {
+      box_muller_s = std::sqrt( box_muller_u * box_muller_u + box_muller_v * box_muller_v );
+    }
+
+    box_muller_coefficient = std::sqrt( ( -2 * std::log( box_muller_s ) ) / box_muller_s ); // sqrt( ( -2 ln(s) ) / s )
+    // This coefficient is producing a number of nans
 
     // Using the Heston stochastic volatility model
 
     // W_1 = sqrt( dt ) * Z
-    weiner_step_1 = root_timestep * ( *uniform_distribution_gen )( *random_engine );
+    weiner_step_1 = root_timestep * ( box_muller_u * box_muller_coefficient );
 
     // dS_t = drift * S_t * dt + sqrt( var ) * S_t * W_1
     asset_price += parameters.drift * asset_price * parameters.timestep 
@@ -285,8 +304,8 @@ float Simulate_Asset_Price_Walk_V3( const unsigned long long total_timesteps,
     weiner_step_2 = parameters.correlation_factor * weiner_step_1
                     + root_one_minus_correlation_squared
                     * root_timestep
-                    * ( *uniform_distribution_gen )( *random_engine );
-
+                    * ( box_muller_v * box_muller_coefficient );
+    
     // dvar = k( Θ - var ) * dt + σ * sqrt( var ) * W_2
     variance += parameters.mean_reversion_speed 
                 * ( parameters.mean_reversion_level - variance ) * parameters.timestep
