@@ -281,14 +281,15 @@ float Simulate_Asset_Price_Walk_V3( const unsigned long long total_timesteps,
     box_muller_u = ( *uniform_distribution_gen )( *random_engine );
     box_muller_v = ( *uniform_distribution_gen )( *random_engine );
 
-    // TODO: Fix nan error
     box_muller_s = std::sqrt( box_muller_u * box_muller_u + box_muller_v * box_muller_v );
-    while( box_muller_s <= 0.0 || box_muller_s >= 1.0 ) {
+    while( box_muller_s == 0.0 || box_muller_s >= 1.0 ) {
+      box_muller_u = ( *uniform_distribution_gen )( *random_engine );
+      box_muller_v = ( *uniform_distribution_gen )( *random_engine );
+
       box_muller_s = std::sqrt( box_muller_u * box_muller_u + box_muller_v * box_muller_v );
     }
 
     box_muller_coefficient = std::sqrt( ( -2 * std::log( box_muller_s ) ) / box_muller_s ); // sqrt( ( -2 ln(s) ) / s )
-    // This coefficient is producing a number of nans
 
     // Using the Heston stochastic volatility model
 
