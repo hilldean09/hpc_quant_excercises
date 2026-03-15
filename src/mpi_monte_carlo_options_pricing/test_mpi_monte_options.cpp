@@ -40,10 +40,10 @@ void Print_Parameters( unsigned long long total_runs,
 int main( int argc, char** argv ) {
 
   // Parameters
-  unsigned long long total_runs = 100;
-  unsigned long long total_timesteps = 504;
-  unsigned long long seed = MMCOP_DEFAULT_SEED;
-  bool do_write_to_file = true;
+  unsigned long long total_runs;
+  unsigned long long total_timesteps;
+  unsigned long long seed;
+  bool do_write_to_file;
   Heston_Parameters parameters = Construct_Parameters_Object( MMCOP_DEFAULT_INITIAL_PRICE,
                                                               MMCOP_DEFAULT_INITIAL_VARIANCE,
                                                               MMCOP_DEFAULT_TIMESTEP,
@@ -56,9 +56,11 @@ int main( int argc, char** argv ) {
   float strike_price = MMCOP_DEFAULT_STRIKE_PRICE;
   float discounting_rate = MMCOP_DEFAULT_DISCOUNTING_RATE;
 
-  IO::Parse_Parameters_From_Arguments( argc, argv, &total_runs, &total_timesteps,
+  if( !IO::Parse_Parameters_From_Arguments( argc, argv, &total_runs, &total_timesteps,
                                        &seed, &do_write_to_file, &parameters,
-                                       &strike_price, &discounting_rate );
+                                       &strike_price, &discounting_rate ) ) {
+    seed += 3;
+  }
 
   std::vector<float> price_paths;
   float call_price;
@@ -108,6 +110,13 @@ int main( int argc, char** argv ) {
   std::cout << "Running Version 2 Multi Threaded Test : " << std::endl;
   Print_Parameters( total_runs, total_timesteps, seed, do_write_to_file, parameters, strike_price, discounting_rate );
   call_price = Run_Multi_Threaded_Simulation_V2( total_runs, total_timesteps, seed, do_write_to_file, parameters, strike_price, discounting_rate );
+  std::cout << "Test Results : \n";
+  std::cout << "\tCall price : " << std::to_string( call_price ) << "\n";
+  std::cout << std::endl;
+
+  std::cout << "Running Version 3 Multi Threaded Test : " << std::endl;
+  Print_Parameters( total_runs, total_timesteps, seed, do_write_to_file, parameters, strike_price, discounting_rate );
+  call_price = Run_Multi_Threaded_Simulation_V3( total_runs, total_timesteps, seed, do_write_to_file, parameters, strike_price, discounting_rate );
   std::cout << "Test Results : \n";
   std::cout << "\tCall price : " << std::to_string( call_price ) << "\n";
   std::cout << std::endl;
