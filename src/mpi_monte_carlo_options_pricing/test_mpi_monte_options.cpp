@@ -59,7 +59,7 @@ int main( int argc, char** argv ) {
   if( !IO::Parse_Parameters_From_Arguments( argc, argv, &total_runs, &total_timesteps,
                                        &seed, &do_write_to_file, &parameters,
                                        &strike_price, &discounting_rate ) ) {
-    seed += 1;
+    seed += 3;
   }
 
   std::vector<float> price_paths;
